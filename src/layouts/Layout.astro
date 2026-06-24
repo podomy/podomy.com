@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/logo.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Podomy | The operating layer for autonomous fleets</title>
+		<meta name="description" content="Podomy builds hived, a partition-native runtime for autonomous machine fleets that cannot stay connected. Deploy workloads, survive segmentation, reconcile state." />
 	</head>
 	<body>
 		<slot />
@@ -14,10 +14,31 @@
 </html>
 
 <style>
-	html,
+	html {
+		scroll-behavior: smooth;
+	}
+
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100%;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		background: #ffffff;
+		color: #27272a;
+		line-height: 1.6;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: #52525b;
 	}
 </style>
