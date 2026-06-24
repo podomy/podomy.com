@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<main>
+		<a class="back" href="/">Podomy</a>
+
+		<h1>Terms of Service</h1>
+		<p class="updated">Last updated: June 24, 2026</p>
+
+		<section>
+			<h2>Who We Are</h2>
+			<p>
+				Podomy is a product of Forge Universal LLC. These terms apply to your use of Podomy websites, software, services, commercial licenses, and related materials.
+			</p>
+		</section>
+
+		<section>
+			<h2>What We Sell</h2>
+			<p>
+				Podomy provides software infrastructure for machine fleets that operate with unreliable connectivity. Our product includes the hived runtime, documentation, support, commercial licensing, and related observability or debugging tooling where applicable.
+			</p>
+		</section>
+
+		<section>
+			<h2>Licensing</h2>
+			<p>
+				hived may be available under an open-source AGPL license and under separate commercial license terms. If you buy a commercial license, the written agreement or order form for that license controls if it conflicts with these terms.
+			</p>
+		</section>
+
+		<section>
+			<h2>Payment</h2>
+			<p>
+				Paid products, licenses, and services are billed by Forge Universal LLC. Prices, billing periods, and included services are shown at checkout, in an invoice, or in a written agreement. You are responsible for any applicable taxes.
+			</p>
+		</section>
+
+		<section>
+			<h2>Refunds</h2>
+			<p>
+				Unless a separate written agreement says otherwise, paid software licenses and support services are non-refundable once access, license keys, or services have been provided. If there is a billing error, contact us and we will review it in good faith.
+			</p>
+		</section>
+
+		<section>
+			<h2>Acceptable Use</h2>
+			<p>
+				You may not use Podomy to violate law, infringe rights, bypass licensing terms, attack systems, or interfere with other users. You are responsible for how you deploy and operate the software in your own environment.
+			</p>
+		</section>
+
+		<section>
+			<h2>No Mission Guarantee</h2>
+			<p>
+				Podomy provides infrastructure software. We do not provide mission logic, vehicle control, safety certification, or operational guarantees for your fleet. You are responsible for validating your own workloads, policies, deployments, and safety requirements.
+			</p>
+		</section>
+
+		<section>
+			<h2>Warranty Disclaimer</h2>
+			<p>
+				To the maximum extent allowed by law, Podomy is provided without warranties unless a separate written agreement says otherwise. We do not guarantee uninterrupted operation, error-free behavior, or fitness for a particular use.
+			</p>
+		</section>
+
+		<section>
+			<h2>Limitation of Liability</h2>
+			<p>
+				To the maximum extent allowed by law, Forge Universal LLC will not be liable for indirect, incidental, special, consequential, or punitive damages, or for lost profits, lost data, downtime, or business interruption.
+			</p>
+		</section>
+
+		<section>
+			<h2>Contact</h2>
+			<p>
+				Questions about these terms can be sent to <a href="mailto:hello@podomy.com">hello@podomy.com</a>.
+			</p>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 72px 24px;
+	}
+
+	.back {
+		display: inline-block;
+		margin-bottom: 56px;
+		font-weight: 700;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		line-height: 1.1;
+		letter-spacing: -0.03em;
+		margin: 0 0 10px;
+		color: #18181b;
+	}
+
+	.updated {
+		margin: 0 0 56px;
+		color: #71717a;
+		font-size: 0.875rem;
+	}
+
+	section {
+		margin: 0 0 36px;
+	}
+
+	h2 {
+		font-size: 1.125rem;
+		margin: 0 0 8px;
+		color: #18181b;
+	}
+
+	p {
+		margin: 0;
+		color: #52525b;
+		font-size: 0.95rem;
+		line-height: 1.7;
+	}
+
+	@media (max-width: 768px) {
+		main {
+			padding: 48px 20px;
+		}
+
+		h1 {
+			font-size: 2rem;
+		}
+	}
+</style>
