@@ -7,8 +7,8 @@ import Layout from '../layouts/Layout.astro';
 		<div class="header-inner">
 			<img class="logo" src="/logo.png" alt="Podomy" />
 			<nav>
-				<a href="#product">Product</a>
-				<a href="#pricing">Pricing</a>
+				<a href="#projects">Projects</a>
+				<a href="#pricing">Licensing</a>
 				<a href="#contact">Contact</a>
 			</nav>
 		</div>
@@ -16,48 +16,61 @@ import Layout from '../layouts/Layout.astro';
 
 	<section id="hero">
 		<div class="hero-content">
-			<h1>The operating layer for<br />autonomous fleets</h1>
+			<h1>Distributed systems for<br />autonomous fleets</h1>
 			<p class="hero-sub">
-				Podomy builds <strong>hived</strong>, a partition-native runtime for machine fleets that cannot stay connected.
-				Deploy workloads, keep operating through segmentation, and reconcile state when nodes reconnect.
+				Podomy builds distributed systems, runtimes, and infrastructure for machine fleets that cannot stay connected.
+				Deploy workloads, keep operating through network partitions, and reconcile state deterministically.
 			</p>
 			<div class="hero-actions">
-				<a href="#contact" class="btn btn-primary">Get early access</a>
-				<a href="#product" class="btn btn-secondary">Learn more</a>
+				<a href="#contact" class="btn btn-primary">Get in touch</a>
+				<a href="#projects" class="btn btn-secondary">Explore projects</a>
 			</div>
 		</div>
 	</section>
 
-	<section id="product">
+	<section id="projects">
 		<div class="section-inner">
-			<h2>What is hived?</h2>
+			<h2>Projects</h2>
 			<p class="section-lede">
-				Kubernetes assumes connectedness. hived assumes partition. Each node carries the control logic it needs to act locally.
+				Systems, runtimes, and protocols engineered from first principles for partition tolerance, decentralized coordination, and resilient fleets.
 			</p>
-			<div class="grid">
-				<div class="card">
-					<h3>Local admission</h3>
-					<p>Each node decides what can run inside the bubble it can see.</p>
+
+			<div class="project-card">
+				<div class="project-header">
+					<div class="project-title">
+						<h3>Concord</h3>
+						<span class="badge">Runtime</span>
+					</div>
+					<p class="project-desc">
+						A partition-native container and process runtime. Where traditional orchestrators assume continuous connectedness, Concord assumes partition—giving each node the local control logic to act autonomously and reconcile state upon reconnection.
+					</p>
 				</div>
-				<div class="card">
-					<h3>Append-only journal</h3>
-					<p>Truth is a local durable event log. State, peers, and workloads are views.</p>
-				</div>
-				<div class="card">
-					<h3>Sync &amp; reconcile</h3>
-					<p>Reconnected nodes exchange missing events and merge deterministically.</p>
-				</div>
-				<div class="card">
-					<h3>Workload contracts</h3>
-					<p>Workloads declare multiplicity, authority, freshness, and merge behavior.</p>
-				</div>
-				<div class="card">
-					<h3>Executor plugins</h3>
-					<p>Containerd runs first. Other executors can support heterogeneous fleets later.</p>
-				</div>
-				<div class="card">
-					<h3>Honest observability</h3>
-					<p>hived classifies everything as known, unknown, stale, conflicted, confirmed, or unconfirmed.</p>
+
+				<div class="grid">
+					<div class="card">
+						<h3>Local admission</h3>
+						<p>Each node decides what can run inside the bubble it can see.</p>
+					</div>
+					<div class="card">
+						<h3>Append-only journal</h3>
+						<p>Truth is a local durable event log. State, peers, and workloads are views.</p>
+					</div>
+					<div class="card">
+						<h3>Sync &amp; reconcile</h3>
+						<p>Reconnected nodes exchange missing events and merge deterministically.</p>
+					</div>
+					<div class="card">
+						<h3>Workload contracts</h3>
+						<p>Workloads declare multiplicity, authority, freshness, and merge behavior.</p>
+					</div>
+					<div class="card">
+						<h3>Executor plugins</h3>
+						<p>Containerd runs first. Other executors can support heterogeneous fleets later.</p>
+					</div>
+					<div class="card">
+						<h3>Honest observability</h3>
+						<p>Concord classifies everything as known, unknown, stale, conflicted, confirmed, or unconfirmed.</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -67,20 +80,20 @@ import Layout from '../layouts/Layout.astro';
 		<div class="section-inner">
 			<h2>Why this exists</h2>
 			<p class="section-lede">
-				The cloud operating model is coming to machines, but real machines do not stay connected.
+				Traditional cloud models assume high-bandwidth, always-on networks. Real-world distributed systems operate across physical boundaries, RF shadows, and disconnected domains.
 			</p>
 			<div class="use-cases">
 				<div class="use-case">
-					<h3>Mining</h3>
-					<p>Underground and remote fleets operate through RF gaps where downtime is expensive.</p>
+					<h3>Mining &amp; heavy industry</h3>
+					<p>Underground and remote fleets operate through RF gaps where connectivity is intermittent and downtime is expensive.</p>
 				</div>
 				<div class="use-case">
 					<h3>Maritime &amp; subsea</h3>
-					<p>AUVs dive, lose comms, surface, and sync. Partition is normal.</p>
+					<p>AUVs and vessels dive, lose comms, surface, and sync. Partition is normal.</p>
 				</div>
 				<div class="use-case">
 					<h3>Defense &amp; contested robotics</h3>
-					<p>Mobile assets need software that works without a reliable cloud or network.</p>
+					<p>Mobile assets need software that works reliably without a persistent cloud or centralized network.</p>
 				</div>
 			</div>
 		</div>
@@ -90,7 +103,7 @@ import Layout from '../layouts/Layout.astro';
 		<div class="section-inner">
 			<h2>Licensing</h2>
 			<p class="section-lede">
-				hived is AGPL. Commercial licenses are available for companies that cannot open-source their modifications.
+				Concord is AGPL. Commercial licenses are available for companies that cannot open-source their modifications.
 			</p>
 			<div class="pricing-grid">
 				<div class="pricing-card">
@@ -287,6 +300,50 @@ import Layout from '../layouts/Layout.astro';
 		margin: 0 0 32px;
 		max-width: 640px;
 		line-height: 1.7;
+	}
+
+	/* Projects */
+	.project-card {
+		margin-bottom: 16px;
+	}
+
+	.project-header {
+		margin-bottom: 24px;
+	}
+
+	.project-title {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 8px;
+	}
+
+	.project-title h3 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #18181b;
+		margin: 0;
+	}
+
+	.badge {
+		display: inline-block;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 2px 8px;
+		background: #f4f4f5;
+		color: #52525b;
+		border-radius: 4px;
+		border: 1px solid #e4e4e7;
+	}
+
+	.project-desc {
+		font-size: 0.95rem;
+		color: #52525b;
+		margin: 0;
+		line-height: 1.7;
+		max-width: 680px;
 	}
 
 	/* Grid */
