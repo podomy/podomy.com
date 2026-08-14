@@ -105,7 +105,11 @@ aside.sidebar {
 	margin-bottom: 20px;
 }
 
-.brand-link {
+.brand-link,
+.brand-link:hover,
+.brand-link:focus,
+.brand-link:active,
+.brand-link:visited {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
@@ -124,6 +128,7 @@ aside.sidebar {
 	font-size: 1rem;
 	font-weight: 600;
 	color: #0c0a09;
+	text-decoration: none;
 }
 
 .nowrap {
