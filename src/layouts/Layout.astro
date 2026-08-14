@@ -1,44 +1,97 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+	title?: string;
+	description?: string;
+	currentPath?: string;
+}
+
+const {
+	title = "Podomy | Distributed Systems & Computational Engineering",
+	description = "Podomy builds distributed systems, computational engineering tools, and simulation software for physical machines and decentralized networks.",
+	currentPath = "/"
+} = Astro.props;
+
+const navItems = [
+	{ label: "About", href: "/" },
+	{ label: "Concord", href: "/concord/" },
+	{ label: "Licensing", href: "/licensing/" },
+	{ label: "Contact", href: "/contact/" },
+	{ label: "Terms", href: "/terms/" },
+];
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/png" href="/logo.png" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<meta name="generator" content={Astro.generator} />
-		<title>Podomy | Distributed Systems</title>
-		<meta name="description" content="Podomy builds distributed systems, runtimes, and infrastructure engineered for partition tolerance, decentralized coordination, and resilient fleets." />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<ClientRouter />
 	</head>
 	<body>
-		<slot />
+		<div class="site-chrome">
+			<div class="layout-grid">
+				<aside class="sidebar">
+					<div class="sidebar-sticky">
+						<div class="brand">
+							<a href="/" class="brand-link">
+								<img
+									src="/logo.png"
+									alt="Podomy"
+									class="brand-logo"
+									width="20"
+									height="20"
+									loading="eager"
+									decoding="sync"
+									transition:persist="podomy-logo"
+								/>
+								<span class="brand-name">Podomy</span>
+							</a>
+						</div>
+						<nav class="nav-links">
+							{navItems.map((item) => {
+								const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
+								return (
+									<a
+										href={item.href}
+										class:list={["nav-link", { active: isActive }]}
+									>
+										{item.label}
+									</a>
+								);
+							})}
+						</nav>
+					</div>
+				</aside>
+
+				<div class="main-column">
+					<main>
+						<slot />
+					</main>
+
+					<footer>
+						<div class="footer-inner">
+							<span class="footer-legal">&copy; 2026 Podomy &middot; Forge Universal LLC</span>
+							<div class="footer-nav">
+								<a href="/contact/" class="footer-link">Contact</a>
+								<a href="/terms/" class="footer-link">Terms</a>
+							</div>
+						</div>
+					</footer>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
-
-<style>
-	html {
-		scroll-behavior: smooth;
-	}
-
-	body {
-		margin: 0;
-		width: 100%;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		background: #ffffff;
-		color: #27272a;
-		line-height: 1.6;
-	}
-
-	* {
-		box-sizing: border-box;
-	}
-
-	a {
-		color: #000;
-		text-decoration: none;
-	}
-
-	a:hover {
-		color: #52525b;
-	}
-</style>

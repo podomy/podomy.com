@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+	title="Concord | Podomy"
+	description="Concord is a partition-native coordination layer and runtime designed for autonomous machines and disconnected environments."
+	currentPath="/concord/"
+>
+	<section class="hero-section">
+		<h1 class="page-title">Concord</h1>
+		<p class="page-lead">
+			Partition-native coordination and runtime engineered for machines operating beyond the reach of cloud control planes.
+		</p>
+		<p class="body-p">
+			Where traditional orchestrators fail when disconnected from a central master, Concord gives each node full local execution authority. Workloads run uninterrupted during network partitions, and state reconciles deterministically upon reconnection.
+		</p>
+
+		<div class="concord-art-wrapper">
+			<img
+				src="/assets/concord-robot-light.png"
+				alt="Concord autonomous runtime mascot"
+				width="160"
+				height="160"
+				class="concord-art"
+			/>
+		</div>
+
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Technical Architecture</h2>
+		</div>
+
+		<table class="projects-table" style="display: table;">
+			<tbody>
+				<tr>
+					<td class="td-name"><strong>Execution</strong></td>
+					<td class="td-desc">Containerd (OCI) and isolated native host process management.</td>
+				</tr>
+				<tr>
+					<td class="td-name"><strong>Journal</strong></td>
+					<td class="td-desc">Local append-only immutable event stream with durable disk write-ahead.</td>
+				</tr>
+				<tr>
+					<td class="td-name"><strong>Sync</strong></td>
+					<td class="td-desc">Deterministic peer-to-peer anti-entropy reconciliation.</td>
+				</tr>
+				<tr>
+					<td class="td-name"><strong>Interfaces</strong></td>
+					<td class="td-desc">Local Unix domain socket API, highly stable CLI, and stable Go SDK.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Target Domains</h2>
+		</div>
+		<p class="body-p">
+			Concord is engineered for environments where continuous connectivity cannot be assumed: subsurface mining fleets navigating underground tunnels, subsea robotics and AUVs executing submerged missions, <span class="nowrap">air-gapped</span> industrial edge systems, or space robotics operating in swarms.
+		</p>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Licensing & Commercial Support</h2>
+		</div>
+		<p class="body-p">
+			Concord is open-source under the AGPLv3. For proprietary embedding, custom runtime drivers, or commercial SLAs, view our <a href="/licensing/" class="body-link">Licensing page</a> or email <a href="mailto:contact@podomy.com" class="body-link">contact@podomy.com</a>.
+		</p>
+	</section>
+</Layout>

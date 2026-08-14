@@ -2,536 +2,94 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout>
-	<header>
-		<div class="header-inner">
-			<img class="logo" src="/logo.png" alt="Podomy" />
-			<nav>
-				<a href="#projects">Projects</a>
-				<a href="#pricing">Licensing</a>
-				<a href="#contact">Contact</a>
-			</nav>
-		</div>
-	</header>
-
-	<section id="hero">
-		<div class="hero-content">
-			<h1>Distributed systems for<br />autonomous fleets</h1>
-			<p class="hero-sub">
-				Podomy builds distributed systems, runtimes, and infrastructure for machine fleets that cannot stay connected.
-				Deploy workloads, keep operating through network partitions, and reconcile state deterministically.
-			</p>
-			<div class="hero-actions">
-				<a href="#contact" class="btn btn-primary">Get in touch</a>
-				<a href="#projects" class="btn btn-secondary">Explore projects</a>
-			</div>
-		</div>
+<Layout currentPath="/">
+	<section class="hero-section">
+		<h1 class="page-lead">
+			Distributed systems and computational engineering.
+		</h1>
+		<p class="body-p">
+			Podomy builds runtime infrastructure, simulation software, and systems engineering tools engineered from first principles for physical machines and decentralized networks.
+		</p>
+		<p class="body-p">
+			All our core software is open-source under the AGPLv3 license. Commercial dual-licensing is available for organizations requiring proprietary integration and enterprise support.
+		</p>
 	</section>
 
-	<section id="projects">
-		<div class="section-inner">
-			<h2>Projects</h2>
-			<p class="section-lede">
-				Systems, runtimes, and protocols engineered from first principles for partition tolerance, decentralized coordination, and resilient fleets.
-			</p>
-
-			<div class="project-card">
-				<div class="project-header">
-					<div class="project-title">
-						<h3>Concord</h3>
-						<span class="badge">Runtime</span>
-					</div>
-					<p class="project-desc">
-						A partition-native container and process runtime. Where traditional orchestrators assume continuous connectedness, Concord assumes partition—giving each node the local control logic to act autonomously and reconcile state upon reconnection.
-					</p>
-				</div>
-
-				<div class="grid">
-					<div class="card">
-						<h3>Local admission</h3>
-						<p>Each node decides what can run inside the bubble it can see.</p>
-					</div>
-					<div class="card">
-						<h3>Append-only journal</h3>
-						<p>Truth is a local durable event log. State, peers, and workloads are views.</p>
-					</div>
-					<div class="card">
-						<h3>Sync &amp; reconcile</h3>
-						<p>Reconnected nodes exchange missing events and merge deterministically.</p>
-					</div>
-					<div class="card">
-						<h3>Workload contracts</h3>
-						<p>Workloads declare multiplicity, authority, freshness, and merge behavior.</p>
-					</div>
-					<div class="card">
-						<h3>Executor plugins</h3>
-						<p>Containerd runs first. Other executors can support heterogeneous fleets later.</p>
-					</div>
-					<div class="card">
-						<h3>Honest observability</h3>
-						<p>Concord classifies everything as known, unknown, stale, conflicted, confirmed, or unconfirmed.</p>
-					</div>
-				</div>
-			</div>
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Projects</h2>
 		</div>
+
+		<div class="projects-mobile">
+			<article class="project-card">
+				<div class="project-card-top">
+					<div>
+						<a href="/concord/" class="project-title body-link">Concord</a>
+						<p class="project-sub">Coordination</p>
+					</div>
+				</div>
+				<p class="project-desc">
+					Partition-native coordination layer for autonomous, offline-first machine workloads.
+				</p>
+				<div style="margin-top: 10px;">
+					<a href="/concord/" class="body-link">Read specs &rarr;</a>
+				</div>
+			</article>
+		</div>
+
+		<table class="projects-table">
+			<tbody>
+				<tr>
+					<td class="td-name">
+						<a href="/concord/" class="body-link"><strong>Concord</strong></a>
+					</td>
+					<td class="td-role">
+						Coordination
+					</td>
+					<td class="td-desc">
+						<p style="margin: 0 0 8px;">
+							Partition-native coordination layer for autonomous, offline-first machine workloads.
+						</p>
+						<a href="/concord/" class="body-link">Read specs &rarr;</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</section>
 
-	<section id="architecture">
-		<div class="section-inner">
-			<h2>Why this exists</h2>
-			<p class="section-lede">
-				Traditional cloud models assume high-bandwidth, always-on networks. Real-world distributed systems operate across physical boundaries, RF shadows, and disconnected domains.
-			</p>
-			<div class="use-cases">
-				<div class="use-case">
-					<h3>Mining &amp; heavy industry</h3>
-					<p>Underground and remote fleets operate through RF gaps where connectivity is intermittent and downtime is expensive.</p>
-				</div>
-				<div class="use-case">
-					<h3>Maritime &amp; subsea</h3>
-					<p>AUVs and vessels dive, lose comms, surface, and sync. Partition is normal.</p>
-				</div>
-				<div class="use-case">
-					<h3>Defense &amp; contested robotics</h3>
-					<p>Mobile assets need software that works reliably without a persistent cloud or centralized network.</p>
-				</div>
-			</div>
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Why this exists</h2>
 		</div>
+		<p class="body-p">
+			Podomy exists to tackle the hardest problems in distributed systems, operating systems, and computational engineering. We build the software stack needed to run, coordinate, and simulate autonomous physical machinery without reliance on centralized infrastructure.
+		</p>
+		<p class="body-p">
+			Our work spans partition-tolerant coordination protocols, low-level runtimes, geometric kernels, and simulation suites.
+		</p>
 	</section>
 
-	<section id="pricing" class="alt">
-		<div class="section-inner">
-			<h2>Licensing</h2>
-			<p class="section-lede">
-				Concord is AGPL. Commercial licenses are available for companies that cannot open-source their modifications.
-			</p>
-			<div class="pricing-grid">
-				<div class="pricing-card">
-					<h3>AGPL</h3>
-					<p class="price">Free</p>
-					<ul>
-						<li>Full runtime</li>
-						<li>Local API &amp; CLI</li>
-						<li>All workload classes</li>
-						<li>Sync &amp; reconciliation engine</li>
-						<li>Must open-source modifications</li>
-					</ul>
-					<a href="#contact" class="btn btn-secondary">Get started</a>
-				</div>
-				<div class="pricing-card featured">
-					<h3>Commercial license</h3>
-					<p class="price">Contact us</p>
-					<ul>
-						<li>Everything in AGPL</li>
-						<li>No open-source requirement</li>
-						<li>Enterprise support</li>
-						<li>Priority feature development</li>
-						<li>Observability &amp; debugging tooling</li>
-					</ul>
-					<a href="#contact" class="btn btn-primary">Contact sales</a>
-				</div>
-			</div>
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Dual Licensing</h2>
 		</div>
+		<p class="body-p">
+			We build in the open. Our core software is licensed under AGPLv3. For teams embedding Podomy technology into proprietary platforms without copyleft obligations, commercial licenses are available.
+		</p>
+		<p class="body-p">
+			<a href="/licensing/" class="body-link">Learn more about licensing &rarr;</a>
+		</p>
 	</section>
 
-	<section id="contact">
-		<div class="section-inner">
-			<h2>Get in touch</h2>
-			<p class="section-lede">
-				We are looking for design partners building software for fleets that cannot stay connected.
-			</p>
-			<div class="contact-links">
-				<a href="mailto:contact@podomy.com" class="btn btn-primary">contact@podomy.com</a>
-			</div>
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Contact</h2>
 		</div>
+		<p class="body-p">
+			We work directly with engineering teams building mission-critical software for physical and distributed systems. When you email us, you reach our core engineering team directly with a typical turnaround under 4 hours.
+		</p>
+		<p class="body-p">
+			<a href="/contact/" class="body-link">Contact engineering &rarr;</a>
+		</p>
 	</section>
-
-	<footer>
-		<div class="footer-inner">
-			<div class="footer-left">
-				<img class="logo" src="/logo.png" alt="Podomy" />
-				<span class="legal">A product of Forge Universal LLC</span>
-			</div>
-			<div class="footer-right">
-				<a href="/terms/">Terms</a>
-				<a href="mailto:contact@podomy.com">contact@podomy.com</a>
-			</div>
-		</div>
-	</footer>
 </Layout>
-
-<style>
-	/* Header */
-	header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 100;
-		background: rgba(255, 255, 255, 0.9);
-		backdrop-filter: blur(12px);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-	}
-
-	.header-inner {
-		max-width: 880px;
-		margin: 0 auto;
-		padding: 10px 24px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.logo {
-		display: block;
-		width: 44px;
-		height: auto;
-	}
-
-	nav {
-		display: flex;
-		gap: 24px;
-	}
-
-	nav a {
-		font-size: 0.875rem;
-		color: #71717a;
-		transition: color 0.2s;
-	}
-
-	nav a:hover {
-		color: #18181b;
-	}
-
-	/* Hero */
-	#hero {
-		padding: 96px 24px 64px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 64vh;
-	}
-
-	.hero-content {
-		max-width: 640px;
-		text-align: center;
-	}
-
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		line-height: 1.1;
-		letter-spacing: -0.03em;
-		color: #18181b;
-		margin: 0 0 18px;
-	}
-
-	.hero-sub {
-		font-size: 1rem;
-		color: #52525b;
-		margin: 0 0 28px;
-		max-width: 560px;
-		margin-left: auto;
-		margin-right: auto;
-		line-height: 1.7;
-	}
-
-	.hero-actions {
-		display: flex;
-		gap: 16px;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-
-	.btn {
-		display: inline-block;
-		padding: 10px 22px;
-		font-size: 0.875rem;
-		font-weight: 600;
-		transition: all 0.2s;
-		cursor: pointer;
-	}
-
-	.btn-primary {
-		background: #000;
-		color: #fff;
-	}
-
-	.btn-primary:hover {
-		background: #27272a;
-		color: #fff;
-	}
-
-	.btn-secondary {
-		background: #f4f4f5;
-		color: #27272a;
-	}
-
-	.btn-secondary:hover {
-		background: #e4e4e7;
-		color: #18181b;
-	}
-
-	/* Sections */
-	section {
-		padding: 64px 24px;
-	}
-
-	section.alt {
-		background: #fafafa;
-	}
-
-	.section-inner {
-		max-width: 880px;
-		margin: 0 auto;
-	}
-
-	h2 {
-		font-size: 1.625rem;
-		font-weight: 700;
-		color: #18181b;
-		margin: 0 0 10px;
-		letter-spacing: -0.02em;
-	}
-
-	.section-lede {
-		font-size: 0.98rem;
-		color: #52525b;
-		margin: 0 0 32px;
-		max-width: 640px;
-		line-height: 1.7;
-	}
-
-	/* Projects */
-	.project-card {
-		margin-bottom: 16px;
-	}
-
-	.project-header {
-		margin-bottom: 24px;
-	}
-
-	.project-title {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		margin-bottom: 8px;
-	}
-
-	.project-title h3 {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: #18181b;
-		margin: 0;
-	}
-
-	.badge {
-		display: inline-block;
-		font-size: 0.6875rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		padding: 2px 8px;
-		background: #f4f4f5;
-		color: #52525b;
-		border-radius: 4px;
-		border: 1px solid #e4e4e7;
-	}
-
-	.project-desc {
-		font-size: 0.95rem;
-		color: #52525b;
-		margin: 0;
-		line-height: 1.7;
-		max-width: 680px;
-	}
-
-	/* Grid */
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 16px;
-	}
-
-	.card {
-		padding: 12px 0;
-	}
-
-	.card h3 {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #18181b;
-		margin: 0 0 8px;
-	}
-
-	.card p {
-		font-size: 0.875rem;
-		color: #52525b;
-		margin: 0;
-		line-height: 1.6;
-	}
-
-	/* Use cases */
-	.use-cases {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 16px;
-	}
-
-	.use-case {
-		padding-left: 0;
-	}
-
-	.use-case h3 {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #18181b;
-		margin: 0 0 8px;
-	}
-
-	.use-case p {
-		font-size: 0.875rem;
-		color: #52525b;
-		line-height: 1.7;
-		margin: 0;
-	}
-
-	/* Pricing */
-	.pricing-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 16px;
-		margin-bottom: 16px;
-	}
-
-	.pricing-card {
-		padding: 24px;
-	}
-
-	.pricing-card.featured {
-		background: #fafafa;
-	}
-
-	.pricing-card h3 {
-		font-size: 1.125rem;
-		font-weight: 600;
-		color: #18181b;
-		margin: 0 0 8px;
-	}
-
-	.price {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: #000;
-		margin: 0 0 18px;
-	}
-
-	.pricing-card ul {
-		list-style: none;
-		padding: 0;
-		margin: 0 0 22px;
-	}
-
-	.pricing-card li {
-		font-size: 0.875rem;
-		color: #52525b;
-		padding: 6px 0;
-	}
-
-	.pricing-card li::before {
-		content: "+ ";
-		color: #000;
-	}
-
-	.pricing-card .btn {
-		display: block;
-		text-align: center;
-	}
-
-	.footnote {
-		font-size: 0.8125rem;
-		color: #71717a;
-		margin: 0;
-	}
-
-	/* Contact */
-	.contact-links {
-		display: flex;
-		gap: 16px;
-		flex-wrap: wrap;
-	}
-
-	.contact-links .btn {
-		font-size: 0.875rem;
-	}
-
-	/* Footer */
-	footer {
-		border-top: 1px solid rgba(0, 0, 0, 0.06);
-		padding: 24px;
-	}
-
-	.footer-inner {
-		max-width: 880px;
-		margin: 0 auto;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.footer-left {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-	}
-
-	.footer-left .logo {
-		width: 32px;
-	}
-
-	.legal {
-		font-size: 0.8125rem;
-		color: #a1a1aa;
-	}
-
-	.footer-right a {
-		font-size: 0.875rem;
-		color: #a1a1aa;
-	}
-
-	.footer-right {
-		display: flex;
-		gap: 16px;
-	}
-
-	.footer-right a:hover {
-		color: #52525b;
-	}
-
-	/* Responsive */
-	@media (max-width: 768px) {
-		h1 {
-			font-size: 2.25rem;
-		}
-
-		.grid {
-			grid-template-columns: 1fr;
-		}
-
-		.use-cases {
-			grid-template-columns: 1fr;
-		}
-
-		.pricing-grid {
-			grid-template-columns: 1fr;
-		}
-
-		section {
-			padding: 64px 20px;
-		}
-
-		#hero {
-			padding: 120px 20px 64px;
-		}
-	}
-</style>
