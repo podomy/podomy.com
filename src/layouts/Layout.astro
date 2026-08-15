@@ -120,9 +120,11 @@ const jsonLd = isDocPage ? {
 						</div>
 						<nav class="nav-links">
 							{navItems.map((item) => {
-								const isActive = item.href === "/" 
-									? currentPath === "/" 
-									: currentPath.startsWith(item.href);
+								const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
+								const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+								const isActive = normalizedItem === "/" 
+									? normalizedCurrent === "/" 
+									: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
 								return (
 									<div class="nav-item-group">
 										<a
