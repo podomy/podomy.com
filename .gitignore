@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# dynamically synced docs
+docs/
+
 # generated types
 .astro/
 

@@ -4,13 +4,44 @@ import Layout from "../../layouts/Layout.astro";
 export async function getStaticPaths() {
   const docModules = import.meta.glob("/docs/*.md", { eager: true });
 
-  const docsNav = [
-    { slug: "overview", label: "Overview" },
-    { slug: "architecture", label: "Architecture" },
-    { slug: "cli", label: "CLI Reference" },
-    { slug: "sdk", label: "Go SDK" },
-    { slug: "deployment", label: "Deployment" },
-  ];
+  // Dynamically build documentation navigation from existing modules
+  const rawNav = Object.entries(docModules).map(([filepath, module]) => {
+    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const doc = module as any;
+    const headings = doc.getHeadings ? doc.getHeadings() : [];
+    const firstH1 = headings.find((h: any) => h.depth === 1)?.text || headings[0]?.text;
+
+    const label =
+      doc.frontmatter?.navTitle ||
+      doc.frontmatter?.title ||
+      firstH1 ||
+      filename.replace(/[-_]/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+    const order =
+      typeof doc.frontmatter?.order === "number" ? doc.frontmatter.order : undefined;
+
+    return {
+      slug: filename,
+      label,
+      order,
+    };
+  });
+
+  const preferredOrder = ["overview", "architecture", "cli", "sdk", "deployment"];
+
+  const docsNav = rawNav.sort((a, b) => {
+    if (a.order !== undefined && b.order !== undefined) {
+      return a.order - b.order;
+    }
+    const aIndex = preferredOrder.indexOf(a.slug);
+    const bIndex = preferredOrder.indexOf(b.slug);
+    if (aIndex !== -1 && bIndex !== -1) {
+      return aIndex - bIndex;
+    }
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return a.slug.localeCompare(b.slug);
+  });
 
   const paths = [];
 
