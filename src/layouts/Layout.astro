@@ -6,12 +6,16 @@ interface Props {
 	title?: string;
 	description?: string;
 	currentPath?: string;
+	docsNav?: Array<{ slug: string; label: string; order?: number }>;
+	activeSlug?: string;
 }
 
 const {
 	title = "Podomy | Distributed Systems & Computational Engineering",
 	description = "Podomy builds distributed systems, computational engineering tools, and simulation software for physical machines and decentralized networks.",
-	currentPath = "/"
+	currentPath = "/",
+	docsNav,
+	activeSlug,
 } = Astro.props;
 
 const navItems = [
@@ -25,6 +29,45 @@ const footerLinks = [
 	{ label: "Contact", href: "/contact/" },
 	{ label: "Terms", href: "/terms/" },
 ];
+
+const canonicalUrl = `https://podomy.com${currentPath.replace(/\/+$/, "") || "/"}${currentPath === "/" ? "" : "/"}`;
+const isDocPage = currentPath.startsWith("/docs/");
+const rawMarkdownUrl = isDocPage 
+	? `https://podomy.com/docs/${activeSlug || "overview"}.md` 
+	: undefined;
+
+const jsonLd = isDocPage ? {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	"headline": title,
+	"description": description,
+	"url": canonicalUrl,
+	"inLanguage": "en",
+	"author": {
+		"@type": "Organization",
+		"name": "Podomy",
+		"url": "https://podomy.com"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "Podomy",
+		"url": "https://podomy.com",
+		"logo": "https://podomy.com/logo.png"
+	}
+} : {
+	"@context": "https://schema.org",
+	"@type": "SoftwareApplication",
+	"name": "Concord",
+	"applicationCategory": "DistributedSystemsApplication",
+	"operatingSystem": "Linux, Embedded POSIX",
+	"description": "Partition-native coordination layer for autonomous physical machines.",
+	"url": "https://podomy.com/concord/",
+	"author": {
+		"@type": "Organization",
+		"name": "Podomy",
+		"url": "https://podomy.com"
+	}
+};
 ---
 
 <!doctype html>
@@ -42,6 +85,17 @@ const footerLinks = [
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="help" type="text/plain" href="/llms.txt" title="LLM Context Manifest" />
+		<link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full Documentation LLM Bundle" />
+		{rawMarkdownUrl && (
+			<link rel="alternate" type="text/markdown" href={rawMarkdownUrl} title="Raw Markdown Content" />
+		)}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:type" content="website" />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 		<ClientRouter />
 	</head>
 	<body>
@@ -70,12 +124,30 @@ const footerLinks = [
 									? currentPath === "/" 
 									: currentPath.startsWith(item.href);
 								return (
-									<a
-										href={item.href}
-										class:list={["nav-link", { active: isActive }]}
-									>
-										{item.label}
-									</a>
+									<div class="nav-item-group">
+										<a
+											href={item.href}
+											class:list={["nav-link", { active: isActive }]}
+										>
+											{item.label}
+										</a>
+										{item.href === "/docs/" && isActive && docsNav && docsNav.length > 0 && (
+											<div class="sidebar-docs-tree">
+												{docsNav.map((doc) => {
+													const docHref = doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
+													const isDocActive = activeSlug === doc.slug;
+													return (
+														<a
+															href={docHref}
+															class:list={["sidebar-doc-link", { active: isDocActive }]}
+														>
+															{doc.label}
+														</a>
+													);
+												})}
+											</div>
+										)}
+									</div>
 								);
 							})}
 						</nav>

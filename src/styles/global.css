@@ -102,8 +102,8 @@ acronym[title] {
 
 @media (min-width: 768px) {
 	.layout-grid {
-		grid-template-columns: 12rem minmax(0, 1fr);
-		gap: 64px;
+		grid-template-columns: 15.5rem minmax(0, 1fr);
+		gap: 56px;
 	}
 }
 
@@ -631,37 +631,202 @@ footer {
 	display: block;
 }
 
-/* Documentation Subnav & Markdown Rendering */
+/* Documentation Sidebar Tree & Layout */
+.nav-item-group {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.sidebar-docs-tree {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 10px;
+	padding-left: 12px;
+	border-left: 1.5px solid #e7e5e4;
+}
+
+.sidebar-doc-link {
+	font-size: 0.88rem;
+	color: #78716c;
+	text-decoration: none;
+	line-height: 1.45;
+	padding: 4px 8px;
+	border-radius: 4px;
+	transition: color 0.15s ease, background 0.15s ease;
+}
+
+.sidebar-doc-link:hover {
+	color: #2563eb;
+	background: rgba(37, 99, 235, 0.04);
+}
+
+.sidebar-doc-link.active {
+	color: #0c0a09;
+	font-weight: 600;
+	background: #f5f5f4;
+}
+
+@media (max-width: 767px) {
+	.sidebar-docs-tree {
+		flex-direction: row;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+		gap: 8px;
+		padding: 10px 0 6px;
+		margin-top: 8px;
+		border-left: none;
+		border-top: 1px solid #e7e5e4;
+	}
+
+	.sidebar-docs-tree::-webkit-scrollbar {
+		display: none;
+	}
+
+	.sidebar-doc-link {
+		white-space: nowrap;
+		font-size: 0.82rem;
+		padding: 4px 10px;
+		border: 1px solid #e7e5e4;
+		border-radius: 9999px;
+		background: #fafaf9;
+	}
+
+	.sidebar-doc-link.active {
+		border-color: #0c0a09;
+		background: #0c0a09;
+		color: #ffffff;
+	}
+}
+
 .docs-wrapper {
 	width: 100%;
 }
 
-.docs-subnav {
+/* Doc Page Meta Header & AI / Raw Actions */
+.doc-meta-header {
 	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	flex-wrap: wrap;
-	gap: 16px;
+	gap: 12px;
 	padding-bottom: 16px;
-	margin-bottom: 28px;
+	margin-bottom: 24px;
 	border-bottom: 1px solid #e7e5e4;
 }
 
-.docs-subnav-link {
-	font-size: 0.9rem;
+.doc-meta-left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.82rem;
 	color: #78716c;
-	text-decoration: none;
-	font-weight: 500;
-	transition: color 0.15s ease;
 }
 
-.docs-subnav-link:hover {
-	color: #2563eb;
-	text-decoration: none;
-}
-
-.docs-subnav-link.active {
-	color: #0c0a09;
+.doc-tag {
+	display: inline-flex;
+	align-items: center;
+	font-size: 0.72rem;
 	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	padding: 2px 6px;
+	border-radius: 3px;
+	background: #f5f5f4;
+	color: #57534e;
+	border: 1px solid #e7e5e4;
+}
+
+.doc-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.doc-action-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 4px 9px;
+	font-size: 0.76rem;
+	font-weight: 500;
+	color: #57534e;
+	background: #fafaf9;
+	border: 1px solid #e7e5e4;
+	border-radius: 4px;
 	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+	user-select: none;
+}
+
+.doc-action-btn:hover {
+	color: #2563eb;
+	background: #ffffff;
+	border-color: #2563eb;
+	text-decoration: none;
+}
+
+.doc-action-btn.copied {
+	color: #16a34a;
+	border-color: #16a34a;
+	background: #f0fdf4;
+}
+
+/* Docs Footer Pagination */
+.docs-pagination {
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+	gap: 16px;
+	margin-top: 48px;
+	padding-top: 24px;
+	border-top: 1px solid #e7e5e4;
+}
+
+.docs-pag-btn {
+	display: flex;
+	flex-direction: column;
+	text-decoration: none;
+	padding: 10px 14px;
+	border: 1px solid #e7e5e4;
+	border-radius: 4px;
+	background: #fafaf9;
+	transition: border-color 0.15s ease, background 0.15s ease;
+	max-width: 48%;
+	flex: 1;
+}
+
+.docs-pag-btn:hover {
+	border-color: #2563eb;
+	background: #ffffff;
+}
+
+.docs-pag-btn.next {
+	margin-left: auto;
+	text-align: right;
+}
+
+.docs-pag-sub {
+	font-size: 0.75rem;
+	color: #78716c;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: 3px;
+}
+
+.docs-pag-title {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #2563eb;
+	line-height: 1.35;
+}
+
+.docs-pag-placeholder {
+	flex: 1;
 }
 
 .markdown-body {

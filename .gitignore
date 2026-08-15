@@ -2,7 +2,7 @@
 dist/
 
 # dynamically synced docs
-docs/
+/docs/
 
 # generated types
 .astro/
