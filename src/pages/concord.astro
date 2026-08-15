@@ -25,34 +25,6 @@ import Layout from '../layouts/Layout.astro';
 				class="concord-art"
 			/>
 		</div>
-
-	</section>
-
-	<section class="content-section">
-		<div class="section-header">
-			<h2 class="section-title">Technical Architecture</h2>
-		</div>
-
-		<table class="projects-table" style="display: table;">
-			<tbody>
-				<tr>
-					<td class="td-name"><strong>Execution</strong></td>
-					<td class="td-desc">Containerd (OCI) and isolated native host process management.</td>
-				</tr>
-				<tr>
-					<td class="td-name"><strong>Journal</strong></td>
-					<td class="td-desc">Local append-only immutable event stream with durable disk write-ahead.</td>
-				</tr>
-				<tr>
-					<td class="td-name"><strong>Sync</strong></td>
-					<td class="td-desc">Deterministic peer-to-peer anti-entropy reconciliation.</td>
-				</tr>
-				<tr>
-					<td class="td-name"><strong>Interfaces</strong></td>
-					<td class="td-desc">Local Unix domain socket API, highly stable CLI, and stable Go SDK.</td>
-				</tr>
-			</tbody>
-		</table>
 	</section>
 
 	<section class="content-section">
@@ -61,6 +33,15 @@ import Layout from '../layouts/Layout.astro';
 		</div>
 		<p class="body-p">
 			Concord is engineered for environments where continuous connectivity cannot be assumed: subsurface mining fleets navigating underground tunnels, subsea robotics and AUVs executing submerged missions, <span class="nowrap">air-gapped</span> industrial edge systems, or space robotics operating in swarms.
+		</p>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Documentation</h2>
+		</div>
+		<p class="body-p">
+			Complete technical specifications, CLI references, Go SDK guides, and deployment manuals are available on the <a href="/docs/" class="body-link">Documentation</a>.
 		</p>
 	</section>
 

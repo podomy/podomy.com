@@ -17,6 +17,10 @@ const {
 const navItems = [
 	{ label: "About", href: "/" },
 	{ label: "Concord", href: "/concord/" },
+	{ label: "Documentation", href: "/docs/" },
+];
+
+const footerLinks = [
 	{ label: "Licensing", href: "/licensing/" },
 	{ label: "Contact", href: "/contact/" },
 	{ label: "Terms", href: "/terms/" },
@@ -62,7 +66,9 @@ const navItems = [
 						</div>
 						<nav class="nav-links">
 							{navItems.map((item) => {
-								const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
+								const isActive = item.href === "/" 
+									? currentPath === "/" 
+									: currentPath.startsWith(item.href);
 								return (
 									<a
 										href={item.href}
@@ -85,8 +91,9 @@ const navItems = [
 						<div class="footer-inner">
 							<span class="footer-legal">&copy; 2026 Podomy &middot; Forge Universal LLC</span>
 							<div class="footer-nav">
-								<a href="/contact/" class="footer-link">Contact</a>
-								<a href="/terms/" class="footer-link">Terms</a>
+								{footerLinks.map((item) => (
+									<a href={item.href} class="footer-link">{item.label}</a>
+								))}
 							</div>
 						</div>
 					</footer>

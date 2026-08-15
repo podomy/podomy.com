@@ -1,0 +1,87 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const docModules = import.meta.glob("/docs/*.md", { eager: true });
+
+  const docsNav = [
+    { slug: "overview", label: "Overview" },
+    { slug: "architecture", label: "Architecture" },
+    { slug: "cli", label: "CLI Reference" },
+    { slug: "sdk", label: "Go SDK" },
+    { slug: "deployment", label: "Deployment" },
+  ];
+
+  const paths = [];
+
+  for (const [filepath, module] of Object.entries(docModules)) {
+    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const doc = module as any;
+
+    // Main route: /docs/ for overview, /docs/<slug>/ for others
+    if (filename === "overview") {
+      paths.push({
+        params: { slug: undefined },
+        props: { doc, docsNav, activeSlug: "overview" },
+      });
+      paths.push({
+        params: { slug: "overview" },
+        props: { doc, docsNav, activeSlug: "overview" },
+      });
+    } else {
+      paths.push({
+        params: { slug: filename },
+        props: { doc, docsNav, activeSlug: filename },
+      });
+    }
+
+    // Also support .md extension for direct markdown cross-links
+    paths.push({
+      params: { slug: `${filename}.md` },
+      props: { doc, docsNav, activeSlug: filename },
+    });
+  }
+
+  return paths;
+}
+
+const { doc, docsNav, activeSlug } = Astro.props;
+const { Content, frontmatter, getHeadings } = doc;
+
+// Determine title from first heading or slug
+const headings = getHeadings ? getHeadings() : [];
+const pageTitle =
+  frontmatter?.title ||
+  headings[0]?.text ||
+  activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1);
+---
+
+<Layout
+  title={`${pageTitle} | Docs | Podomy`}
+  description="Concord partition-native coordination runtime documentation."
+  currentPath={Astro.url.pathname}
+>
+  <div class="docs-wrapper">
+    <nav class="docs-subnav">
+      {
+        docsNav.map((item) => {
+          const isCurrent = activeSlug === item.slug;
+          const href =
+            item.slug === "overview" ? "/docs/" : `/docs/${item.slug}/`;
+          return (
+            <a
+              href={href}
+              class:list={["docs-subnav-link", { active: isCurrent }]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <article class="markdown-body">
+      <Content />
+    </article>
+  </div>
+</Layout>
