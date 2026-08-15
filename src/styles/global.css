@@ -439,6 +439,13 @@ main {
 	text-decoration: none;
 }
 
+.dot-sep {
+	display: inline-block;
+	color: #a8a29e;
+	margin: 0 10px;
+	vertical-align: middle;
+}
+
 .content-section {
 	margin-top: 36px;
 	width: 100%;
