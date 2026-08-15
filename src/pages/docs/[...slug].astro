@@ -81,7 +81,75 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { doc, docsNav, activeSlug } = Astro.props;
+const docModules = import.meta.glob("/docs/*.md", { eager: true });
+let { doc, docsNav, activeSlug } = Astro.props as any;
+
+if (!doc || !docsNav || !activeSlug) {
+  let paramSlug = Astro.params.slug || "overview";
+  if (paramSlug.endsWith(".md")) {
+    paramSlug = paramSlug.replace(/\.md$/, "");
+  }
+  activeSlug = paramSlug;
+
+  const targetKey = Object.keys(docModules).find((k) =>
+    k.endsWith(`/${activeSlug}.md`)
+  );
+  doc = targetKey ? (docModules[targetKey] as any) : null;
+
+  const rawNav = Object.entries(docModules).map(([filepath, module]) => {
+    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const d = module as any;
+    const headings = d.getHeadings ? d.getHeadings() : [];
+    const firstH1 =
+      headings.find((h: any) => h.depth === 1)?.text || headings[0]?.text;
+
+    const label =
+      d.frontmatter?.navTitle ||
+      d.frontmatter?.title ||
+      firstH1 ||
+      filename
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+    const order =
+      typeof d.frontmatter?.order === "number"
+        ? d.frontmatter.order
+        : undefined;
+
+    return {
+      slug: filename,
+      label,
+      order,
+    };
+  });
+
+  const preferredOrder = [
+    "overview",
+    "architecture",
+    "cli",
+    "sdk",
+    "deployment",
+  ];
+
+  docsNav = rawNav.sort((a, b) => {
+    if (a.order !== undefined && b.order !== undefined) {
+      return a.order - b.order;
+    }
+    const aIndex = preferredOrder.indexOf(a.slug);
+    const bIndex = preferredOrder.indexOf(b.slug);
+    if (aIndex !== -1 && bIndex !== -1) {
+      return aIndex - bIndex;
+    }
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return a.slug.localeCompare(b.slug);
+  });
+}
+
+if (!doc) {
+  return Astro.redirect("/docs/");
+}
+
 const { Content, frontmatter, getHeadings } = doc;
 
 // Determine title from first heading or slug

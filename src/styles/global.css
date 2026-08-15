@@ -676,35 +676,32 @@ footer {
 	.sidebar-doc-link::before {
 		content: "";
 		position: absolute;
-		left: -6px;
-		top: -4px;
-		height: calc(50% + 4px);
+		left: -14px;
+		top: calc(50% - 1px);
 		width: 10px;
-		border-left: 1.5px solid #d6d3d1;
-		border-bottom: 1.5px solid #d6d3d1;
-		border-bottom-left-radius: 3px;
+		height: 1.5px;
+		background: #d6d3d1;
 		pointer-events: none;
-		box-sizing: border-box;
-	}
-
-	.sidebar-doc-link:first-child::before {
-		top: -8px;
-		height: calc(50% + 8px);
 	}
 
 	.sidebar-doc-link::after {
 		content: "";
 		position: absolute;
-		left: -6px;
-		top: 50%;
-		bottom: -4px;
-		border-left: 1.5px solid #d6d3d1;
+		left: -14px;
+		top: 0;
+		bottom: -2px;
+		width: 1.5px;
+		background: #d6d3d1;
 		pointer-events: none;
-		box-sizing: border-box;
+	}
+
+	.sidebar-doc-link:first-child::after {
+		top: -8px;
 	}
 
 	.sidebar-doc-link:last-child::after {
-		display: none;
+		bottom: auto;
+		height: calc(50% + 0.5px);
 	}
 }
 
