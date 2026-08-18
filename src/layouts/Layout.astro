@@ -21,7 +21,7 @@ const {
 const navItems = [
 	{ label: "About", href: "/" },
 	{ label: "Concord", href: "/concord/" },
-	{ label: "Documentation", href: "/docs/" },
+	{ label: "Docs", href: "/docs/" },
 	{ label: "Pricing", href: "/pricing/" },
 	{ label: "Contact", href: "/contact/" },
 ];
@@ -120,41 +120,42 @@ const jsonLd = isDocPage ? {
 								<span class="brand-name">Podomy</span>
 							</a>
 						</div>
-						<nav class="nav-links">
-							{navItems.map((item) => {
-								const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
-								const normalizedItem = item.href.replace(/\/+$/, "") || "/";
-								const isActive = normalizedItem === "/" 
-									? normalizedCurrent === "/" 
-									: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
-								return (
-									<div class="nav-item-group">
+						{docsNav && docsNav.length > 0 ? (
+							<nav class="nav-links docs-nav">
+								{docsNav.map((doc) => {
+									const docHref = doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
+									const isDocActive = activeSlug === doc.slug;
+									return (
 										<a
-											href={item.href}
-											class:list={["nav-link", { active: isActive }]}
+											href={docHref}
+											class:list={["docs-sidebar-link", { active: isDocActive }]}
 										>
-											{item.label}
+											{doc.label}
 										</a>
-										{item.href === "/docs/" && isActive && docsNav && docsNav.length > 0 && (
-											<div class="sidebar-docs-tree">
-												{docsNav.map((doc) => {
-													const docHref = doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
-													const isDocActive = activeSlug === doc.slug;
-													return (
-														<a
-															href={docHref}
-															class:list={["sidebar-doc-link", { active: isDocActive }]}
-														>
-															{doc.label}
-														</a>
-													);
-												})}
-											</div>
-										)}
-									</div>
-								);
-							})}
-						</nav>
+									);
+								})}
+							</nav>
+						) : (
+							<nav class="nav-links">
+								{navItems.map((item) => {
+									const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
+									const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+									const isActive = normalizedItem === "/" 
+										? normalizedCurrent === "/" 
+										: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
+									return (
+										<div class="nav-item-group">
+											<a
+												href={item.href}
+												class:list={["nav-link", { active: isActive }]}
+											>
+												{item.label}
+											</a>
+										</div>
+									);
+								})}
+							</nav>
+						)}
 					</div>
 				</aside>
 
