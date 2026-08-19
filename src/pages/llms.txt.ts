@@ -55,7 +55,7 @@ ${docsEntries.join("\n")}
 ## Core Website Pages
 - [About](https://podomy.com/): Podomy company overview, core focus, and values.
 - [Concord](https://podomy.com/concord/): Concord project technical specifications.
-- [Licensing](https://podomy.com/licensing/): Dual licensing details (AGPLv3 copyleft and commercial options).
+- [Pricing](https://podomy.com/pricing/): License pricing (AGPLv3 free tier, startup flat rate, enterprise per-node).
 - [Contact](https://podomy.com/contact/): Direct engineering contact channel.
 - [Terms](https://podomy.com/terms/): Terms of service.
 `;

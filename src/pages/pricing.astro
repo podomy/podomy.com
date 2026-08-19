@@ -4,23 +4,39 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
 	title="Pricing | Podomy"
-	description="Podomy commercial licenses start at $10,000 USD per year. Enterprise deployments are quoted individually. SLAs and support are priced separately."
+	description="Podomy software is free under AGPLv3. Startups pay $10,000 per year flat with unlimited nodes. Enterprise is priced per node with volume discounts. No SLAs, no support contracts."
 	currentPath="/pricing/"
 >
 	<h1 class="page-title">Pricing</h1>
-	<p class="page-lead" style="font-weight: 400;">
+	<p class="body-p">
 		Clear numbers. No sales maze.
 	</p>
 
 	<section class="content-section" style="margin-top: 0;">
 		<p class="body-p">
-			<strong>Open source: $0.</strong> AGPLv3. Free when your code stays open.
+			Podomy software is free to use under AGPLv3 when your application remains open source.
 		</p>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">For proprietary use</h2>
+		</div>
+		<ul class="bullet-list">
+			<li><strong>Startups: $10,000/year flat.</strong> Unlimited nodes. Companies with less than $1M in annual revenue.</li>
+			<li><strong>Enterprise:</strong> Companies with $1M+ in annual revenue. Priced per node, with volume discounts.</li>
+		</ul>
 		<p class="body-p">
-			<strong>Commercial: from $10,000/year.</strong> For companies under $1M/year. Proprietary code is fine. Startups welcome.
+			A node is one physical server or distinct cloud instance running the runtime.
 		</p>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Terms</h2>
+		</div>
 		<p class="body-p">
-			<strong>Enterprise: custom.</strong> For companies over $1M/year. Based on machine count, warranty, indemnity, and SLAs.
+			Annual licenses cover production use of the software. We don't offer support contracts or SLAs. If you need hands-on help, <a href="/contact/" class="body-link">consulting</a> is available separately.
 		</p>
 	</section>
 
@@ -36,9 +52,6 @@ import Layout from '../layouts/Layout.astro';
 		</p>
 	</section>
 
-	<p class="body-p">
-		Support and SLAs are separate.
-	</p>
 	<p class="body-p">
 		<a href="/contact/" class="body-link">Contact engineering</a>
 	</p>
