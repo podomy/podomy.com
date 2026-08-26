@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { compareSlugs, slugFromPath } from "../lib/docs";
 
 export const GET: APIRoute = async () => {
   const docModules = import.meta.glob("/docs/*.md", {
@@ -7,27 +8,12 @@ export const GET: APIRoute = async () => {
     import: "default",
   });
 
-  const preferredOrder = [
-    "overview",
-    "architecture",
-    "cli",
-    "sdk",
-    "deployment",
-  ];
-
-  const sortedFiles = Object.entries(docModules).sort(([pathA], [pathB]) => {
-    const slugA = pathA.split("/").pop()?.replace(".md", "") || "";
-    const slugB = pathB.split("/").pop()?.replace(".md", "") || "";
-    const idxA = preferredOrder.indexOf(slugA);
-    const idxB = preferredOrder.indexOf(slugB);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    if (idxA !== -1) return -1;
-    if (idxB !== -1) return 1;
-    return slugA.localeCompare(slugB);
-  });
+  const sortedFiles = Object.entries(docModules).sort(([pathA], [pathB]) =>
+    compareSlugs(slugFromPath(pathA), slugFromPath(pathB))
+  );
 
   const docsEntries = sortedFiles.map(([filepath, rawContent]) => {
-    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const filename = slugFromPath(filepath);
     const content = typeof rawContent === "string" ? rawContent : "";
     const lines = content.split("\n").filter((l) => l.trim().length > 0);
     const firstH1 = lines.find((l) => l.startsWith("# "))?.replace(/^#\s+/, "") || filename;

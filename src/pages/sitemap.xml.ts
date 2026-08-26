@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { slugFromPath } from "../lib/docs";
 
 export const GET: APIRoute = async () => {
   const docModules = import.meta.glob("/docs/*.md", { eager: true });
@@ -16,7 +17,7 @@ export const GET: APIRoute = async () => {
   ];
 
   const docPages = Object.keys(docModules).flatMap((filepath) => {
-    const slug = filepath.split("/").pop()?.replace(".md", "") || "";
+    const slug = slugFromPath(filepath);
     return [
       { loc: `${siteUrl}/docs/${slug}/`, changefreq: "daily", priority: "0.8" },
       { loc: `${siteUrl}/docs/${slug}.md`, changefreq: "daily", priority: "0.7" },

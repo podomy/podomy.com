@@ -1,63 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { buildDocsNav, slugFromPath } from "../../lib/docs";
 
 export async function getStaticPaths() {
   const docModules = import.meta.glob("/docs/*.md", { eager: true });
-
-  // Dynamically build documentation navigation from existing modules
-  const rawNav = Object.entries(docModules).map(([filepath, module]) => {
-    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
-    const doc = module as any;
-    const headings = doc.getHeadings ? doc.getHeadings() : [];
-    const firstH1 =
-      headings.find((h: any) => h.depth === 1)?.text || headings[0]?.text;
-
-    const label =
-      doc.frontmatter?.navTitle ||
-      doc.frontmatter?.title ||
-      firstH1 ||
-      filename
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, (c: string) => c.toUpperCase());
-
-    const order =
-      typeof doc.frontmatter?.order === "number"
-        ? doc.frontmatter.order
-        : undefined;
-
-    return {
-      slug: filename,
-      label,
-      order,
-    };
-  });
-
-  const preferredOrder = [
-    "overview",
-    "architecture",
-    "cli",
-    "sdk",
-    "deployment",
-  ];
-
-  const docsNav = rawNav.sort((a, b) => {
-    if (a.order !== undefined && b.order !== undefined) {
-      return a.order - b.order;
-    }
-    const aIndex = preferredOrder.indexOf(a.slug);
-    const bIndex = preferredOrder.indexOf(b.slug);
-    if (aIndex !== -1 && bIndex !== -1) {
-      return aIndex - bIndex;
-    }
-    if (aIndex !== -1) return -1;
-    if (bIndex !== -1) return 1;
-    return a.slug.localeCompare(b.slug);
-  });
+  const docsNav = buildDocsNav(docModules);
 
   const paths = [];
 
   for (const [filepath, module] of Object.entries(docModules)) {
-    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const filename = slugFromPath(filepath);
     const doc = module as any;
 
     // Main route: /docs/ for overview, /docs/<slug>/ for others
@@ -84,6 +36,7 @@ export async function getStaticPaths() {
 const docModules = import.meta.glob("/docs/*.md", { eager: true });
 let { doc, docsNav, activeSlug } = Astro.props as any;
 
+// Fallback for direct/dev requests that bypass getStaticPaths props.
 if (!doc || !docsNav || !activeSlug) {
   let paramSlug = Astro.params.slug || "overview";
   if (paramSlug.endsWith(".md")) {
@@ -95,55 +48,7 @@ if (!doc || !docsNav || !activeSlug) {
     k.endsWith(`/${activeSlug}.md`)
   );
   doc = targetKey ? (docModules[targetKey] as any) : null;
-
-  const rawNav = Object.entries(docModules).map(([filepath, module]) => {
-    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
-    const d = module as any;
-    const headings = d.getHeadings ? d.getHeadings() : [];
-    const firstH1 =
-      headings.find((h: any) => h.depth === 1)?.text || headings[0]?.text;
-
-    const label =
-      d.frontmatter?.navTitle ||
-      d.frontmatter?.title ||
-      firstH1 ||
-      filename
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, (c: string) => c.toUpperCase());
-
-    const order =
-      typeof d.frontmatter?.order === "number"
-        ? d.frontmatter.order
-        : undefined;
-
-    return {
-      slug: filename,
-      label,
-      order,
-    };
-  });
-
-  const preferredOrder = [
-    "overview",
-    "architecture",
-    "cli",
-    "sdk",
-    "deployment",
-  ];
-
-  docsNav = rawNav.sort((a, b) => {
-    if (a.order !== undefined && b.order !== undefined) {
-      return a.order - b.order;
-    }
-    const aIndex = preferredOrder.indexOf(a.slug);
-    const bIndex = preferredOrder.indexOf(b.slug);
-    if (aIndex !== -1 && bIndex !== -1) {
-      return aIndex - bIndex;
-    }
-    if (aIndex !== -1) return -1;
-    if (bIndex !== -1) return 1;
-    return a.slug.localeCompare(b.slug);
-  });
+  docsNav = buildDocsNav(docModules);
 }
 
 if (!doc) {

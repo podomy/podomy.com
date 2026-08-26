@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import BrandLink from '../components/BrandLink.astro';
 
 interface Props {
 	title?: string;
@@ -58,8 +59,8 @@ const footerSocial = [
 
 const canonicalUrl = `https://podomy.com${currentPath.replace(/\/+$/, "") || "/"}${currentPath === "/" ? "" : "/"}`;
 const isDocPage = currentPath.startsWith("/docs/");
-const rawMarkdownUrl = isDocPage 
-	? `https://podomy.com/docs/${activeSlug || "overview"}.md` 
+const rawMarkdownUrl = isDocPage
+	? `https://podomy.com/docs/${activeSlug || "overview"}.md`
 	: undefined;
 
 const jsonLd = isDocPage ? {
@@ -105,7 +106,7 @@ const jsonLd = isDocPage ? {
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
 		<meta name="generator" content={Astro.generator} />
@@ -126,42 +127,82 @@ const jsonLd = isDocPage ? {
 	</head>
 	<body>
 		<div class="site-chrome">
-			{isDocPage && (
-				<div class="product-bar">
-					<a href="/" class="product-bar-brand brand-link" aria-label="Podomy home">
-						<span class="brand-logo" aria-hidden="true"></span>
-						<span class="brand-name">Podomy</span>
-					</a>
-					<nav class="product-tabs" aria-label="Products">
-						{products.map((product) => (
-							<a
-								href={product.href}
-								class:list={["product-tab", { active: product.id === activeProduct }]}
-							>
-								<span class="product-tab-name">{product.name}</span>
-								<img
-									src={product.logo}
-									alt=""
-									width="72"
-									height="72"
-									class="product-tab-logo"
-								/>
-							</a>
-						))}
+			<div class="product-bar">
+				<div class="product-bar-left">
+					{isDocPage ? (
+						<BrandLink class="product-bar-brand" label="Podomy home" />
+					) : (
+						<div class="product-bar-plain">
+							<BrandLink />
+						</div>
+					)}
+					<button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav-modal">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="4" y1="7" x2="20" y2="7"></line>
+							<line x1="4" y1="12" x2="20" y2="12"></line>
+							<line x1="4" y1="17" x2="20" y2="17"></line>
+						</svg>
+					</button>
+				</div>
+				<div class="product-bar-right">
+					{isDocPage ? (
+						<nav class="product-tabs" aria-label="Products">
+							{products.map((product) => (
+								<a
+									href={product.href}
+									class:list={["product-tab", { active: product.id === activeProduct }]}
+								>
+									<span class="product-tab-name">{product.name}</span>
+									<img
+										src={product.logo}
+										alt=""
+										width="72"
+										height="72"
+										class="product-tab-logo"
+									/>
+								</a>
+							))}
+						</nav>
+					) : (
+						<div class="product-bar-spacer" aria-hidden="true"></div>
+					)}
+				</div>
+			</div>
+			<div id="mobile-nav-modal" class="mobile-nav-modal" aria-hidden="true">
+				<div class="mobile-nav-backdrop"></div>
+				<div class="mobile-nav-panel" role="dialog" aria-modal="true" aria-label="Navigation">
+					<div class="mobile-nav-header">
+						<BrandLink />
+						<button class="mobile-nav-close" aria-label="Close navigation">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="18" y1="6" x2="6" y2="18"></line>
+								<line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						</button>
+					</div>
+					<nav class="nav-links mobile-nav-links">
+						{navItems.map((item) => {
+							const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
+							const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+							const isActive = normalizedItem === "/" 
+								? normalizedCurrent === "/" 
+								: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
+							return (
+								<a
+									href={item.href}
+									class:list={["mobile-nav-link", { active: isActive }]}
+								>
+									<span>{item.label}</span>
+									{isActive && <span class="mobile-nav-active-dot"></span>}
+								</a>
+							);
+						})}
 					</nav>
 				</div>
-			)}
+			</div>
 			<div class:list={["layout-grid", { "docs-layout": isDocPage }]}>
 				<aside class="sidebar">
 					<div class="sidebar-sticky">
-						{!isDocPage && (
-							<div class="brand">
-								<a href="/" class="brand-link">
-									<span class="brand-logo" aria-hidden="true"></span>
-									<span class="brand-name">Podomy</span>
-								</a>
-							</div>
-						)}
 						{docsNav && docsNav.length > 0 ? (
 							<nav class="nav-links docs-nav">
 								{docsNav.map((doc) => {
@@ -205,32 +246,63 @@ const jsonLd = isDocPage ? {
 					<main>
 						<slot />
 					</main>
-
-					<footer>
-						<div class="footer-inner">
-							<span class="footer-legal">&copy; 2026 Podomy &middot; Forge Universal LLC</span>
-							<div class="footer-nav">
-								{footerLinks.map((item) => (
-									<a href={item.href} class="footer-link">{item.label}</a>
-								))}
-								{footerSocial.map((item) => (
-									<a
-										href={item.href}
-										class="footer-link footer-icon-link"
-										target="_blank"
-										rel="noopener noreferrer"
-										aria-label={item.label}
-									>
-										<svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true">
-											<path fill="currentColor" d={item.path} />
-										</svg>
-									</a>
-								))}
-							</div>
-						</div>
-					</footer>
 				</div>
 			</div>
+			<footer class="site-footer">
+				<div class="footer-inner">
+					<div class="footer-group">
+						<span class="footer-legal">&copy; 2026 Podomy Forge Universal LLC</span>
+						{footerLinks.map((item) => (
+							<a href={item.href} class="footer-link">{item.label}</a>
+						))}
+					</div>
+					<div class="footer-group">
+						{footerSocial.map((item) => (
+							<a
+								href={item.href}
+								class="footer-link footer-icon-link"
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={item.label}
+							>
+								<svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true">
+									<path fill="currentColor" d={item.path} />
+								</svg>
+							</a>
+						))}
+					</div>
+				</div>
+			</footer>
 		</div>
+		<script>
+			function initHamburger() {
+				const btn = document.querySelector('.hamburger');
+				const modal = document.getElementById('mobile-nav-modal');
+				const closeBtn = document.querySelector('.mobile-nav-close');
+				const backdrop = document.querySelector('.mobile-nav-backdrop');
+				if (!btn || !modal) return;
+				const open = () => {
+					modal.classList.add('open');
+					modal.setAttribute('aria-hidden', 'false');
+					btn.setAttribute('aria-expanded', 'true');
+					document.body.style.overflow = 'hidden';
+				};
+				const close = () => {
+					modal.classList.remove('open');
+					modal.setAttribute('aria-hidden', 'true');
+					btn.setAttribute('aria-expanded', 'false');
+					document.body.style.overflow = '';
+				};
+				btn.onclick = open;
+				if (closeBtn) closeBtn.onclick = close;
+				if (backdrop) backdrop.onclick = close;
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape' && modal.classList.contains('open')) close();
+				});
+			}
+			document.addEventListener('DOMContentLoaded', initHamburger);
+			document.addEventListener('astro:page-load', initHamburger);
+			initHamburger();
+		</script>
 	</body>
 </html>

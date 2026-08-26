@@ -1,0 +1,14 @@
+---
+// Podomy brand mark linking to the home page.
+interface Props {
+	class?: string;
+	label?: string;
+}
+
+const { class: className, label } = Astro.props;
+---
+
+<a href="/" class:list={["brand-link", className]} aria-label={label}>
+	<span class="brand-logo" aria-hidden="true"></span>
+	<span class="brand-name">Podomy</span>
+</a>

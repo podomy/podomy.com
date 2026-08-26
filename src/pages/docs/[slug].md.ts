@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { slugFromPath } from "../../lib/docs";
 
 export async function getStaticPaths() {
   const docModules = import.meta.glob("/docs/*.md", {
@@ -8,7 +9,7 @@ export async function getStaticPaths() {
   });
 
   return Object.entries(docModules).map(([filepath, rawContent]) => {
-    const filename = filepath.split("/").pop()?.replace(".md", "") || "";
+    const filename = slugFromPath(filepath);
     const content = typeof rawContent === "string" ? rawContent : "";
 
     return {
