@@ -79,10 +79,6 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
 >
   <div class="docs-wrapper">
     <div class="doc-meta-header">
-      <div class="doc-meta-left">
-        <span class="doc-tag">Concord v1.0</span>
-        <span>Documentation</span>
-      </div>
       <div class="doc-actions">
         <button
           type="button"
@@ -90,28 +86,14 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
           id="copy-md-btn"
           title="Copy raw markdown content to clipboard for LLMs and AI prompts"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+          <svg width="1em" height="1em" viewBox="0 310 1024 590" fill="currentColor" aria-hidden="true" style="width: 1em; height: 1em;">
+            <path
+              fill="currentColor"
+              d="M922 319q-1 0 -2 1h-11v0h-836q-18 0 -33.5 8.5t-25.5 22.5q-17 26 -13 57v461q1 18 11 32.5t24 22.5q25 14 55 10v1l843 -1q18 -1 32.5 -11t22.5 -24q14 -24 10 -55h1l-1 -459q-1 -17 -11 -31.5t-24 -23.5q-19 -10 -42 -11zM918 367h2q12 0 20 5q6 3 8.5 6.5t2.5 9.5 l1 456v3q2 16 -5 29q-3 5 -6.5 7.5t-9.5 2.5l-840 1h-3q-16 2 -28 -5q-6 -3 -8.5 -6.5t-2.5 -9.5v-458l-1 -4q-2 -14 5.5 -25t18.5 -11h837zM145 464v327h96v-188l96 120l96 -120v188h96v-327h-96l-96 120l-96 -120h-96zM697 464v168h-96l144 159l144 -159h-96v-168h-96z"
+            ></path>
           </svg>
           <span class="btn-text">Copy Markdown</span>
         </button>
-        <a
-          href={`/docs/${activeSlug}.md`}
-          class="doc-action-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Open raw markdown plain text"
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
-          <span>Raw .md</span>
-        </a>
       </div>
     </div>
 
