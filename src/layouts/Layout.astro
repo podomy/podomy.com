@@ -12,8 +12,8 @@ interface Props {
 }
 
 const {
-	title = "Podomy | Distributed Systems & Computational Engineering",
-	description = "Podomy builds distributed systems, computational engineering tools, and simulation software for physical machines and decentralized networks.",
+	title = "Podomy | Distributed Systems for Robotic Fleets",
+	description = "Distributed systems for robotic fleets that automate physical work. Highest reliability from warehouse aisles to mines, factories, and space.",
 	currentPath = "/",
 	docsNav,
 	activeSlug,
@@ -86,7 +86,7 @@ const jsonLd = isDocPage ? {
 	"name": "Concord",
 	"applicationCategory": "DistributedSystemsApplication",
 	"operatingSystem": "Linux, Embedded POSIX",
-	"description": "Partition-native coordination layer for autonomous physical machines.",
+	"description": "AP distributed system, a runtime and coordination layer designed for robotic fleets. It gives you highest reliability from warehouse aisles to mines, factories, and space.",
 	"url": "https://podomy.com/concord/",
 	"author": {
 		"@type": "Organization",
@@ -243,7 +243,7 @@ const jsonLd = isDocPage ? {
 			<footer class="site-footer">
 				<div class="footer-inner">
 					<div class="footer-group">
-						<span class="footer-legal">&copy; 2026 Podomy Forge Universal LLC</span>
+						<span class="footer-legal">&copy; 2026 Podomy, Forge Universal LLC</span>
 						{footerLinks.map((item) => (
 							<a href={item.href} class="footer-link">{item.label}</a>
 						))}

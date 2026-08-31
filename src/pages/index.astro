@@ -5,8 +5,33 @@ import Layout from '../layouts/Layout.astro';
 <Layout currentPath="/">
 	<section class="hero-section">
 		<h1 class="page-lead" style="font-weight: 400;">
-			Distributed systems and computational engineering for machines that run without the cloud. Assume the worst. Build accordingly.
+			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">podomy</span> builds distributed systems for robotic fleets that automate physical work. Highest reliability from warehouse aisles to mines, factories, and space.
 		</h1>
+		<blockquote class="fleet-quote">
+			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">fleet</span> any group of autonomous machines acting together
+		</blockquote>
+		<style>
+			.fleet-quote {
+				position: relative;
+				background: #fefce8;
+				border: 1px solid #fde68a;
+				padding: 16px 18px 16px 44px;
+				margin: 16px 0 0;
+				color: #44403c;
+				font-size: 0.95rem;
+				line-height: 1.7;
+			}
+			.fleet-quote::before {
+				content: "\201C";
+				position: absolute;
+				left: 12px;
+				top: 2px;
+				font-family: Georgia, "Times New Roman", serif;
+				font-size: 2.4rem;
+				line-height: 1;
+				color: #f59e0b;
+			}
+		</style>
 	</section>
 
 	<section class="content-section">
@@ -23,7 +48,7 @@ import Layout from '../layouts/Layout.astro';
 					</div>
 				</div>
 				<p class="project-desc">
-					Coordination for machines that keep running when the network drops.
+					AP distributed system, a runtime and coordination layer for robotic fleets.
 				</p>
 				<div style="margin-top: 10px;">
 					<a href="/concord/" class="body-link">Read specs</a>
@@ -42,7 +67,7 @@ import Layout from '../layouts/Layout.astro';
 					</td>
 					<td class="td-desc">
 						<p style="margin: 0 0 8px;">
-							Coordination for machines that keep running when the network drops.
+							AP distributed system, a runtime and coordination layer for robotic fleets.
 						</p>
 						<a href="/concord/" class="body-link">Read specs</a>
 					</td>

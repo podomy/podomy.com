@@ -78,25 +78,6 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
   activeSlug={activeSlug}
 >
   <div class="docs-wrapper">
-    <div class="doc-meta-header">
-      <div class="doc-actions">
-        <button
-          type="button"
-          class="doc-action-btn copy-markdown-btn"
-          id="copy-md-btn"
-          title="Copy raw markdown content to clipboard for LLMs and AI prompts"
-        >
-          <svg width="1em" height="1em" viewBox="0 310 1024 590" fill="currentColor" aria-hidden="true" style="width: 1em; height: 1em;">
-            <path
-              fill="currentColor"
-              d="M922 319q-1 0 -2 1h-11v0h-836q-18 0 -33.5 8.5t-25.5 22.5q-17 26 -13 57v461q1 18 11 32.5t24 22.5q25 14 55 10v1l843 -1q18 -1 32.5 -11t22.5 -24q14 -24 10 -55h1l-1 -459q-1 -17 -11 -31.5t-24 -23.5q-19 -10 -42 -11zM918 367h2q12 0 20 5q6 3 8.5 6.5t2.5 9.5 l1 456v3q2 16 -5 29q-3 5 -6.5 7.5t-9.5 2.5l-840 1h-3q-16 2 -28 -5q-6 -3 -8.5 -6.5t-2.5 -9.5v-458l-1 -4q-2 -14 5.5 -25t18.5 -11h837zM145 464v327h96v-188l96 120l96 -120v188h96v-327h-96l-96 120l-96 -120h-96zM697 464v168h-96l144 159l144 -159h-96v-168h-96z"
-            ></path>
-          </svg>
-          <span class="btn-text">Copy Markdown</span>
-        </button>
-      </div>
-    </div>
-
     <article class="markdown-body">
       <Content />
     </article>
@@ -124,37 +105,5 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
   </div>
 </Layout>
 
-<script>
-  function initCopyButton() {
-    const btn = document.getElementById("copy-md-btn");
-    if (!btn) return;
 
-    btn.onclick = async () => {
-      try {
-        let path = window.location.pathname.replace(/\/+$/, "");
-        if (path === "" || path === "/docs") {
-          path = "/docs/overview";
-        }
-        const targetUrl = path + ".md";
-        const res = await fetch(targetUrl);
-        const text = res.ok ? await res.text() : "";
-        if (text) {
-          await navigator.clipboard.writeText(text);
-          const textSpan = btn.querySelector(".btn-text");
-          if (textSpan) textSpan.textContent = "Copied!";
-          btn.classList.add("copied");
-          setTimeout(() => {
-            if (textSpan) textSpan.textContent = "Copy Markdown";
-            btn.classList.remove("copied");
-          }, 2000);
-        }
-      } catch (e) {
-        console.error("Failed to copy markdown", e);
-      }
-    };
-  }
-
-  document.addEventListener("astro:page-load", initCopyButton);
-  initCopyButton();
-</script>
 

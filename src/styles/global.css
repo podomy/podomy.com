@@ -1313,7 +1313,6 @@ footer {
 	gap: 16px;
 	margin-top: 48px;
 	padding-top: 24px;
-	border-top: 1px solid #e7e5e4;
 }
 
 .docs-pag-btn {
@@ -1488,7 +1487,6 @@ footer {
 
 .markdown-body hr {
 	border: none;
-	border-top: 1px solid #e7e5e4;
 	margin: 32px 0;
 }
 
