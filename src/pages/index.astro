@@ -1,12 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import LoopsNewsletter from '../components/LoopsNewsletter.astro';
 ---
 
 <Layout currentPath="/">
 	<section class="hero-section">
-		<h1 class="page-lead" style="font-weight: 400;">
-			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">podomy</span> builds distributed systems for robotic fleets.
-		</h1>
+		<h1 class="page-title">Podomy</h1>
+		<p class="page-lead" style="font-weight: 400;">
+			We build distributed systems for robotic fleets.
+		</p>
 		<blockquote class="fleet-quote">
 			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">fleet</span> any group of autonomous machines acting together
 		</blockquote>
@@ -87,4 +89,7 @@ import Layout from '../layouts/Layout.astro';
 			<a href="/pricing/" class="body-link">See pricing</a><svg class="dot-sep" width="4" height="4" viewBox="0 0 4 4" aria-hidden="true"><circle cx="2" cy="2" r="2" fill="currentColor"/></svg><a href="/contact/" class="body-link">Contact engineering</a>
 		</p>
 	</section>
+
+	<LoopsNewsletter />
 </Layout>
+

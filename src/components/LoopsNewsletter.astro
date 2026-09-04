@@ -1,0 +1,156 @@
+---
+interface Props {
+	formId?: string;
+	title?: string;
+	description?: string;
+	buttonText?: string;
+	placeholder?: string;
+}
+
+const {
+	formId = "cmtmgdabt05nv0iv6qh03qr6r",
+	title = "Newsletter",
+	description = "Engineering updates on distributed systems, consensus algorithms, and robotic fleet coordination.",
+	buttonText = "Subscribe",
+	placeholder = "you@example.com",
+} = Astro.props;
+
+const actionUrl = `https://app.loops.so/api/newsletter-form/${formId}`;
+---
+
+<section class="content-section newsletter-section">
+	{title && (
+		<div class="section-header">
+			<h2 class="section-title">{title}</h2>
+		</div>
+	)}
+	{description && <p class="body-p">{description}</p>}
+
+	<div class="newsletter-container">
+		<form
+			action={actionUrl}
+			method="POST"
+			class="newsletter-form"
+			data-loops-form
+			data-form-id={formId}
+		>
+			<div class="newsletter-input-group">
+				<input
+					type="email"
+					name="email"
+					class="newsletter-input"
+					placeholder={placeholder}
+					required
+					autocomplete="email"
+					aria-label="Email address for newsletter"
+				/>
+				<button type="submit" class="newsletter-btn">
+					<span class="btn-text">{buttonText}</span>
+					<span class="btn-spinner" aria-hidden="true" style="display: none;">
+						<svg class="spinner-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
+							<circle cx="12" cy="12" r="9" stroke-opacity="0.25"></circle>
+							<path d="M12 3a9 9 0 0 1 9 9" stroke-linecap="round"></path>
+						</svg>
+					</span>
+				</button>
+			</div>
+			<p class="newsletter-note">No spam. Unsubscribe at any time.</p>
+
+			<div class="newsletter-status success" style="display: none;" role="alert">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="20 6 9 17 4 12"></polyline>
+				</svg>
+				<span class="status-message">Thanks for subscribing.</span>
+			</div>
+
+			<div class="newsletter-status error" style="display: none;" role="alert">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="12" y1="8" x2="12" y2="12"></line>
+					<line x1="12" y1="16" x2="12.01" y2="16"></line>
+				</svg>
+				<span class="status-message">Something went wrong. Please try again.</span>
+			</div>
+		</form>
+	</div>
+</section>
+
+<script>
+	function setupLoopsForms() {
+		const forms = document.querySelectorAll<HTMLFormElement>('form[data-loops-form]');
+
+		forms.forEach((form) => {
+			if (form.dataset.loopsInitialized === 'true') return;
+			form.dataset.loopsInitialized = 'true';
+
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault();
+
+				const formId = form.dataset.formId || '';
+				const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
+				const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+				const btnText = form.querySelector<HTMLElement>('.btn-text');
+				const btnSpinner = form.querySelector<HTMLElement>('.btn-spinner');
+				const successStatus = form.querySelector<HTMLElement>('.newsletter-status.success');
+				const errorStatus = form.querySelector<HTMLElement>('.newsletter-status.error');
+
+				if (!emailInput || !submitBtn) return;
+				const email = emailInput.value.trim();
+
+				if (!email) return;
+
+				// Hide previous statuses
+				if (successStatus) successStatus.style.display = 'none';
+				if (errorStatus) errorStatus.style.display = 'none';
+
+				// Set loading state
+				submitBtn.disabled = true;
+				if (btnText) btnText.style.display = 'none';
+				if (btnSpinner) btnSpinner.style.display = 'inline-block';
+
+				try {
+					const endpoint = form.action || `https://app.loops.so/api/newsletter-form/${formId}`;
+					const response = await fetch(endpoint, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+						},
+						body: new URLSearchParams({ email }).toString(),
+					});
+
+					if (response.ok) {
+						if (successStatus) {
+							const data = await response.json().catch(() => ({}));
+							const msg = data.message || "Thanks for subscribing.";
+							const msgSpan = successStatus.querySelector('.status-message');
+							if (msgSpan) msgSpan.textContent = msg;
+							successStatus.style.display = 'flex';
+						}
+						form.reset();
+					} else {
+						const data = await response.json().catch(() => ({}));
+						if (errorStatus) {
+							const msgSpan = errorStatus.querySelector('.status-message');
+							if (msgSpan) msgSpan.textContent = data.message || 'Something went wrong. Please check your email address.';
+							errorStatus.style.display = 'flex';
+						}
+					}
+				} catch (err) {
+					if (errorStatus) {
+						const msgSpan = errorStatus.querySelector('.status-message');
+						if (msgSpan) msgSpan.textContent = 'Unable to connect. Please check your network and try again.';
+						errorStatus.style.display = 'flex';
+					}
+				} finally {
+					submitBtn.disabled = false;
+					if (btnText) btnText.style.display = 'inline-block';
+					if (btnSpinner) btnSpinner.style.display = 'none';
+				}
+			});
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', setupLoopsForms);
+	document.addEventListener('astro:page-load', setupLoopsForms);
+	setupLoopsForms();
+</script>

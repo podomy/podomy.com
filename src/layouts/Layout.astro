@@ -1,300 +1,381 @@
 ---
-import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
-import BrandLink from '../components/BrandLink.astro';
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import BrandLink from "../components/BrandLink.astro";
 
 interface Props {
-	title?: string;
-	description?: string;
-	currentPath?: string;
-	docsNav?: Array<{ slug: string; label: string; order?: number }>;
-	activeSlug?: string;
+  title?: string;
+  description?: string;
+  currentPath?: string;
+  docsNav?: Array<{ slug: string; label: string; order?: number }>;
+  activeSlug?: string;
 }
 
 const {
-	title = "Podomy | Distributed Systems for Robotic Fleets",
-	description = "podomy builds distributed systems for robotic fleets.",
-	currentPath = "/",
-	docsNav,
-	activeSlug,
+  title = "Podomy | Distributed Systems for Robotic Fleets",
+  description = "podomy builds distributed systems for robotic fleets.",
+  currentPath = "/",
+  docsNav,
+  activeSlug,
 } = Astro.props;
 
 const navItems = [
-	{ label: "About", href: "/" },
-	{ label: "Concord", href: "/concord/" },
-	{ label: "Docs", href: "/docs/" },
-	{ label: "Pricing", href: "/pricing/" },
-	{ label: "Contact", href: "/contact/" },
+  { label: "About", href: "/" },
+  { label: "Concord", href: "/concord/" },
+  { label: "Docs", href: "/docs/" },
+  { label: "Pricing", href: "/pricing/" },
+  { label: "Contact", href: "/contact/" },
 ];
 
 const footerLinks = [
-	{ label: "Pricing", href: "/pricing/" },
-	{ label: "Contact", href: "/contact/" },
-	{ label: "Terms", href: "/terms/" },
+  { label: "Pricing", href: "/pricing/" },
+  { label: "Contact", href: "/contact/" },
+  { label: "Terms", href: "/terms/" },
 ];
 
 const products = [
-	{
-		id: "concord",
-		name: "Concord",
-		href: "/concord/",
-	},
+  {
+    id: "concord",
+    name: "Concord",
+    href: "/concord/",
+  },
 ];
 
 const activeProduct = "concord";
 
 const footerSocial = [
-	{
-		label: "X",
-		href: "https://x.com/polypodomy",
-		path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z",
-	},
-	{
-		label: "GitHub",
-		href: "https://github.com/podomy",
-		path: "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.225.825-.51 0-.255-.015-.93-.015-1.62-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23.54.825 1.62 1.41 2.67 1.395.42-.33.795-.855.93-1.41-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.105-3.195 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.645 1.665.225 2.895.105 3.195.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .285.225.63.825.51A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z",
-	},
+  {
+    label: "X",
+    href: "https://x.com/polypodomy",
+    path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/podomy",
+    path: "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.225.825-.51 0-.255-.015-.93-.015-1.62-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23.54.825 1.62 1.41 2.67 1.395.42-.33.795-.855.93-1.41-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.105-3.195 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.645 1.665.225 2.895.105 3.195.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .285.225.63.825.51A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z",
+  },
 ];
 
 const canonicalUrl = `https://podomy.com${currentPath.replace(/\/+$/, "") || "/"}${currentPath === "/" ? "" : "/"}`;
 const isDocPage = currentPath.startsWith("/docs/");
 const rawMarkdownUrl = isDocPage
-	? `https://podomy.com/docs/${activeSlug || "overview"}.md`
-	: undefined;
+  ? `https://podomy.com/docs/${activeSlug || "overview"}.md`
+  : undefined;
 
-const jsonLd = isDocPage ? {
-	"@context": "https://schema.org",
-	"@type": "TechArticle",
-	"headline": title,
-	"description": description,
-	"url": canonicalUrl,
-	"inLanguage": "en",
-	"author": {
-		"@type": "Organization",
-		"name": "Podomy",
-		"url": "https://podomy.com"
-	},
-	"publisher": {
-		"@type": "Organization",
-		"name": "Podomy",
-		"url": "https://podomy.com",
-		"logo": "https://podomy.com/logo.png"
-	}
-} : {
-	"@context": "https://schema.org",
-	"@type": "SoftwareApplication",
-	"name": "Concord",
-	"applicationCategory": "DistributedSystemsApplication",
-	"operatingSystem": "Linux, Embedded POSIX",
-	"description": "AP distributed system, a runtime and coordination layer designed for robotic fleets. It gives you highest reliability from warehouse aisles to mines, factories, and space.",
-	"url": "https://podomy.com/concord/",
-	"author": {
-		"@type": "Organization",
-		"name": "Podomy",
-		"url": "https://podomy.com"
-	}
-};
+const jsonLd = isDocPage
+  ? {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      headline: title,
+      description: description,
+      url: canonicalUrl,
+      inLanguage: "en",
+      author: {
+        "@type": "Organization",
+        name: "Podomy",
+        url: "https://podomy.com",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "Podomy",
+        url: "https://podomy.com",
+        logo: "https://podomy.com/logo.png",
+      },
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Concord",
+      applicationCategory: "DistributedSystemsApplication",
+      operatingSystem: "Linux, Embedded POSIX",
+      description:
+        "AP distributed system, a runtime and coordination layer designed for robotic fleets. It gives you highest reliability from warehouse aisles to mines, factories, and space.",
+      url: "https://podomy.com/concord/",
+      author: {
+        "@type": "Organization",
+        name: "Podomy",
+        url: "https://podomy.com",
+      },
+    };
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/png" href="/logo.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
-			rel="stylesheet"
-		/>
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href={canonicalUrl} />
-		<link rel="help" type="text/plain" href="/llms.txt" title="LLM Context Manifest" />
-		<link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full Documentation LLM Bundle" />
-		{rawMarkdownUrl && (
-			<link rel="alternate" type="text/markdown" href={rawMarkdownUrl} title="Raw Markdown Content" />
-		)}
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:type" content="website" />
-		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-		<ClientRouter />
-	</head>
-	<body>
-		<div class="site-chrome">
-			<div class="product-bar">
-				<div class="product-bar-left">
-					{isDocPage ? (
-						<BrandLink class="product-bar-brand" label="Podomy home" />
-					) : (
-						<div class="product-bar-plain">
-							<BrandLink />
-						</div>
-					)}
-					<button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav-modal">
-						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-							<line x1="4" y1="7" x2="20" y2="7"></line>
-							<line x1="4" y1="12" x2="20" y2="12"></line>
-							<line x1="4" y1="17" x2="20" y2="17"></line>
-						</svg>
-					</button>
-				</div>
-				<div class="product-bar-right">
-					{isDocPage ? (
-						<nav class="product-tabs" aria-label="Products">
-							{products.map((product) => (
-								<a
-									href={product.href}
-									class:list={["product-tab", { active: product.id === activeProduct }]}
-								>
-									<span class="product-tab-name">{product.name}</span>
-								</a>
-							))}
-						</nav>
-					) : (
-						<div class="product-bar-spacer" aria-hidden="true"></div>
-					)}
-				</div>
-			</div>
-			<div id="mobile-nav-modal" class="mobile-nav-modal" aria-hidden="true">
-				<div class="mobile-nav-backdrop"></div>
-				<div class="mobile-nav-panel" role="dialog" aria-modal="true" aria-label="Navigation">
-					<div class="mobile-nav-header">
-						<BrandLink />
-						<button class="mobile-nav-close" aria-label="Close navigation">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line>
-							</svg>
-						</button>
-					</div>
-					<nav class="nav-links mobile-nav-links">
-						{navItems.map((item) => {
-							const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
-							const normalizedItem = item.href.replace(/\/+$/, "") || "/";
-							const isActive = normalizedItem === "/" 
-								? normalizedCurrent === "/" 
-								: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
-							return (
-								<a
-									href={item.href}
-									class:list={["mobile-nav-link", { active: isActive }]}
-								>
-									<span>{item.label}</span>
-									{isActive && <span class="mobile-nav-active-dot"></span>}
-								</a>
-							);
-						})}
-					</nav>
-				</div>
-			</div>
-			<div class:list={["layout-grid", { "docs-layout": isDocPage }]}>
-				<aside class="sidebar">
-					<div class="sidebar-sticky">
-						{docsNav && docsNav.length > 0 ? (
-							<nav class="nav-links docs-nav">
-								{docsNav.map((doc) => {
-									const docHref = doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
-									const isDocActive = activeSlug === doc.slug;
-									return (
-										<a
-											href={docHref}
-											class:list={["docs-sidebar-link", { active: isDocActive }]}
-										>
-											{doc.label}
-										</a>
-									);
-								})}
-							</nav>
-						) : (
-							<nav class="nav-links">
-								{navItems.map((item) => {
-									const normalizedCurrent = currentPath.replace(/\/+$/, "") || "/";
-									const normalizedItem = item.href.replace(/\/+$/, "") || "/";
-									const isActive = normalizedItem === "/" 
-										? normalizedCurrent === "/" 
-										: normalizedCurrent === normalizedItem || normalizedCurrent.startsWith(normalizedItem + "/");
-									return (
-										<div class="nav-item-group">
-											<a
-												href={item.href}
-												class:list={["nav-link", { active: isActive }]}
-											>
-												{item.label}
-											</a>
-										</div>
-									);
-								})}
-							</nav>
-						)}
-					</div>
-				</aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link
+      rel="help"
+      type="text/plain"
+      href="/llms.txt"
+      title="LLM Context Manifest"
+    />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms-full.txt"
+      title="Full Documentation LLM Bundle"
+    />
+    {
+      rawMarkdownUrl && (
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href={rawMarkdownUrl}
+          title="Raw Markdown Content"
+        />
+      )
+    }
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="site-chrome">
+      <div class="product-bar">
+        <div class="product-bar-left">
+          {
+            isDocPage ? (
+              <BrandLink class="product-bar-brand" label="Podomy home" />
+            ) : (
+              <div class="product-bar-plain">
+                <BrandLink />
+              </div>
+            )
+          }
+          <button
+            class="hamburger"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-nav-modal"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="product-bar-right">
+          {
+            isDocPage ? (
+              <nav class="product-tabs" aria-label="Products">
+                {products.map((product) => (
+                  <a
+                    href={product.href}
+                    class:list={[
+                      "product-tab",
+                      { active: product.id === activeProduct },
+                    ]}
+                  >
+                    <span class="product-tab-name">{product.name}</span>
+                  </a>
+                ))}
+              </nav>
+            ) : (
+              <div class="product-bar-spacer" aria-hidden="true" />
+            )
+          }
+        </div>
+      </div>
+      <div id="mobile-nav-modal" class="mobile-nav-modal" aria-hidden="true">
+        <div class="mobile-nav-backdrop"></div>
+        <div
+          class="mobile-nav-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation"
+        >
+          <div class="mobile-nav-header">
+            <BrandLink />
+            <button class="mobile-nav-close" aria-label="Close navigation">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <nav class="nav-links mobile-nav-links">
+            {
+              navItems.map((item) => {
+                const normalizedCurrent =
+                  currentPath.replace(/\/+$/, "") || "/";
+                const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+                const isActive =
+                  normalizedItem === "/"
+                    ? normalizedCurrent === "/"
+                    : normalizedCurrent === normalizedItem ||
+                      normalizedCurrent.startsWith(normalizedItem + "/");
+                return (
+                  <a
+                    href={item.href}
+                    class:list={["mobile-nav-link", { active: isActive }]}
+                  >
+                    <span>{item.label}</span>
+                    {isActive && <span class="mobile-nav-active-dot" />}
+                  </a>
+                );
+              })
+            }
+          </nav>
+        </div>
+      </div>
+      <div class:list={["layout-grid", { "docs-layout": isDocPage }]}>
+        <aside class="sidebar">
+          <div class="sidebar-sticky">
+            {
+              docsNav && docsNav.length > 0 ? (
+                <nav class="nav-links docs-nav">
+                  {docsNav.map((doc) => {
+                    const docHref =
+                      doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
+                    const isDocActive = activeSlug === doc.slug;
+                    return (
+                      <a
+                        href={docHref}
+                        class:list={[
+                          "docs-sidebar-link",
+                          { active: isDocActive },
+                        ]}
+                      >
+                        {doc.label}
+                      </a>
+                    );
+                  })}
+                </nav>
+              ) : (
+                <nav class="nav-links">
+                  {navItems.map((item) => {
+                    const normalizedCurrent =
+                      currentPath.replace(/\/+$/, "") || "/";
+                    const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+                    const isActive =
+                      normalizedItem === "/"
+                        ? normalizedCurrent === "/"
+                        : normalizedCurrent === normalizedItem ||
+                          normalizedCurrent.startsWith(normalizedItem + "/");
+                    return (
+                      <div class="nav-item-group">
+                        <a
+                          href={item.href}
+                          class:list={["nav-link", { active: isActive }]}
+                        >
+                          {item.label}
+                        </a>
+                      </div>
+                    );
+                  })}
+                </nav>
+              )
+            }
+          </div>
+        </aside>
 
-				<div class="main-column">
-					<main>
-						<slot />
-					</main>
-				</div>
-			</div>
-			<footer class="site-footer">
-				<div class="footer-inner">
-					<div class="footer-group">
-						<span class="footer-legal">&copy; 2026 Podomy, Forge Universal LLC</span>
-						{footerLinks.map((item) => (
-							<a href={item.href} class="footer-link">{item.label}</a>
-						))}
-					</div>
-					<div class="footer-group">
-						{footerSocial.map((item) => (
-							<a
-								href={item.href}
-								class="footer-link footer-icon-link"
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={item.label}
-							>
-								<svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true">
-									<path fill="currentColor" d={item.path} />
-								</svg>
-							</a>
-						))}
-					</div>
-				</div>
-			</footer>
-		</div>
-		<script>
-			function initHamburger() {
-				const btn = document.querySelector('.hamburger');
-				const modal = document.getElementById('mobile-nav-modal');
-				const closeBtn = document.querySelector('.mobile-nav-close');
-				const backdrop = document.querySelector('.mobile-nav-backdrop');
-				if (!btn || !modal) return;
-				const open = () => {
-					modal.classList.add('open');
-					modal.setAttribute('aria-hidden', 'false');
-					btn.setAttribute('aria-expanded', 'true');
-					document.body.style.overflow = 'hidden';
-				};
-				const close = () => {
-					modal.classList.remove('open');
-					modal.setAttribute('aria-hidden', 'true');
-					btn.setAttribute('aria-expanded', 'false');
-					document.body.style.overflow = '';
-				};
-				btn.onclick = open;
-				if (closeBtn) closeBtn.onclick = close;
-				if (backdrop) backdrop.onclick = close;
-				document.addEventListener('keydown', (e) => {
-					if (e.key === 'Escape' && modal.classList.contains('open')) close();
-				});
-			}
-			document.addEventListener('DOMContentLoaded', initHamburger);
-			document.addEventListener('astro:page-load', initHamburger);
-			initHamburger();
-		</script>
-	</body>
+        <div class="main-column">
+          <main>
+            <slot />
+          </main>
+        </div>
+      </div>
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div class="footer-group">
+            <span class="footer-legal"
+              >&copy; 2026 Podomy, Forge Universal LLC</span
+            >
+            {
+              footerLinks.map((item) => (
+                <a href={item.href} class="footer-link">
+                  {item.label}
+                </a>
+              ))
+            }
+          </div>
+          <div class="footer-group">
+            {
+              footerSocial.map((item) => (
+                <a
+                  href={item.href}
+                  class="footer-link footer-icon-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.label}
+                >
+                  <svg
+                    class="footer-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path fill="currentColor" d={item.path} />
+                  </svg>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      function initHamburger() {
+        const btn = document.querySelector(".hamburger");
+        const modal = document.getElementById("mobile-nav-modal");
+        const closeBtn = document.querySelector(".mobile-nav-close");
+        const backdrop = document.querySelector(".mobile-nav-backdrop");
+        if (!btn || !modal) return;
+        const open = () => {
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+          btn.setAttribute("aria-expanded", "true");
+          document.body.style.overflow = "hidden";
+        };
+        const close = () => {
+          modal.classList.remove("open");
+          modal.setAttribute("aria-hidden", "true");
+          btn.setAttribute("aria-expanded", "false");
+          document.body.style.overflow = "";
+        };
+        btn.onclick = open;
+        if (closeBtn) closeBtn.onclick = close;
+        if (backdrop) backdrop.onclick = close;
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.classList.contains("open")) close();
+        });
+      }
+      document.addEventListener("DOMContentLoaded", initHamburger);
+      document.addEventListener("astro:page-load", initHamburger);
+      initHamburger();
+    </script>
+  </body>
 </html>
