@@ -61,3 +61,16 @@ Simulators (including Resonance) attach a tun as the underlay NIC. That tun must
 ## Scheduling
 
 In each connected segment, the node with the lowest UUID string is the leader. It assigns unassigned workloads to the peer with the fewest active workloads. When segments reunite, journals sync and state converges.
+
+---
+
+## Conflict model
+
+Concord sidesteps most conflicts by construction: every `workload run` mints a fresh unique ID, so concurrent submissions never disagree about the same key. Merge of distinct IDs is a union.
+
+The sidestep leaks in one place. Nodes re-record the spec (the scheduler claiming a workload writes its own `workload.spec` copy per ID), so one workload ID can end up with several distinct spec events from different authors. These are conflicting same-ID writes, and the view resolves them deterministically (`internal/journalview`):
+
+* Tombstone dominance. A stored tombstone (`Removed=true`) is never replaced by a live spec copy, regardless of arrival order. A stop wins over any spec copy.
+* Live-live tiebreak. Two live specs for one ID resolve by deterministic comparison: the byte-larger serialization wins, regardless of arrival order.
+
+Both rules are order-independent: every node converges to the same stored copy no matter the sync arrival sequence. No wall-clock or logical timestamp participates in these paths.
