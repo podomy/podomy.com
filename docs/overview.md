@@ -25,7 +25,7 @@ Traditional distributed systems freeze or fail when machines lose network access
 
 ## Next Steps
 
-* [Architecture](architecture.md) -> How Concord works under the hood.
-* [CLI Reference](cli.md) -> Command line commands and usage.
-* [Go SDK](sdk.md) -> Programmatic workload management.
-* [Deployment](deployment.md) -> Running nodes and clustering.
+* [Architecture](/docs/architecture/) -> How Concord works under the hood.
+* [CLI Reference](/docs/cli/) -> Command line commands and usage.
+* [Go SDK](/docs/sdk/) -> Programmatic workload management.
+* [Deployment](/docs/deployment/) -> Running nodes and clustering.
