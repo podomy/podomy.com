@@ -28,9 +28,9 @@ export const GET: APIRoute = async () => {
   const body = `# Podomy & Concord Architecture Context
 > LLM and AI Agent Manifest. For consolidated full documentation text, see https://podomy.com/llms-full.txt
 
-Podomy is an engineering studio developing distributed systems, edge coordination software, and computational simulation tools for physical machines and decentralized networks.
+Podomy builds distributed systems for robotic fleets.
 
-Concord is Podomy's core partition-native coordination runtime designed for intermittent, disconnected, and air-gapped machine environments (mining fleets, autonomous underwater vehicles, industrial edge systems, aerospace swarms).
+Concord is an AP distributed system, a runtime and coordination layer designed for robotic fleets.
 
 ## Concord Documentation
 ${docsEntries.join("\n")}

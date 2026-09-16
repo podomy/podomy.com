@@ -13,7 +13,7 @@ interface Props {
 
 const {
   title = "Podomy | Distributed Systems for Robotic Fleets",
-  description = "podomy builds distributed systems for robotic fleets.",
+  description = "We build distributed systems for robotic fleets.",
   currentPath = "/",
   docsNav,
   activeSlug,
@@ -77,21 +77,28 @@ const jsonLd = isDocPage
         logo: "https://podomy.com/logo.png",
       },
     }
-  : {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      name: "Concord",
-      applicationCategory: "DistributedSystemsApplication",
-      operatingSystem: "Linux, Embedded POSIX",
-      description:
-        "AP distributed system, a runtime and coordination layer designed for robotic fleets. It gives you highest reliability from warehouse aisles to mines, factories, and space.",
-      url: "https://podomy.com/concord/",
-      author: {
+  : currentPath.replace(/\/+$/, "") === "/concord" || currentPath === "/concord/"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Concord",
+        applicationCategory: "DistributedSystemsApplication",
+        operatingSystem: "Linux, Embedded POSIX",
+        description: description,
+        url: canonicalUrl,
+        author: {
+          "@type": "Organization",
+          name: "Podomy",
+          url: "https://podomy.com",
+        },
+      }
+    : {
+        "@context": "https://schema.org",
         "@type": "Organization",
         name: "Podomy",
         url: "https://podomy.com",
-      },
-    };
+        description: description,
+      };
 ---
 
 <!doctype html>
