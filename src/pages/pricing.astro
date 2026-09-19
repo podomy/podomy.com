@@ -4,40 +4,94 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
 	title="Pricing | Podomy"
-		description="Podomy software is free under AGPLv3. Startups pay $10,000 per year flat with unlimited nodes. Enterprise is priced per node. No SLAs, no support contracts."
+	description="Free under AGPLv3. Startups $10,000 per year. Enterprise is base plus tiers. No SLAs."
 	currentPath="/pricing/"
 >
 	<h1 class="page-title">Pricing</h1>
 	<p class="body-p">
-		Clear numbers. No sales maze.
+		We are strongly pro open source. Use under AGPLv3 is completely free. If you intend to stay proprietary, count nodes, do the math, email us. A call is welcome but never required.
 	</p>
-
-	<section class="content-section" style="margin-top: 0;">
-		<p class="body-p">
-			Podomy software is free to use under AGPLv3 when your application remains open source.
-		</p>
-	</section>
 
 	<section class="content-section">
 		<div class="section-header">
 			<h2 class="section-title">For proprietary use</h2>
 		</div>
 		<ul class="bullet-list">
-			<li><strong>Startups: $10,000/year flat.</strong> Unlimited nodes. Companies with less than $1M in annual revenue.</li>
-			<li><strong>Enterprise:</strong> Companies with $1M+ in annual revenue. Priced per node.</li>
+			<li><strong>Startup: $10k/year.</strong> Unlimited nodes. Under $1M revenue.</li>
+			<li><strong>Enterprise:</strong> $1M+ revenue. Base fee plus tiers.</li>
 		</ul>
+		<blockquote class="fleet-quote">
+			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">node</span> one machine. Usually one robot. One fee covers all our code on it, now and later.
+		</blockquote>
+	</section>
+
+	<section class="content-section">
+		<div class="section-header">
+			<h2 class="section-title">Enterprise formula</h2>
+		</div>
 		<p class="body-p">
-			A node is one physical server or distinct cloud instance running the runtime.
+			$25k base covers 25 nodes. Then:
 		</p>
+		<table class="projects-table">
+			<tbody>
+				<tr>
+					<td class="td-name">Nodes 26-100</td>
+					<td class="td-desc">$600/node/year</td>
+				</tr>
+				<tr>
+					<td class="td-name">Nodes 101-500</td>
+					<td class="td-desc">$300/node/year</td>
+				</tr>
+				<tr>
+					<td class="td-name">Nodes 501-1500</td>
+					<td class="td-desc">$120/node/year</td>
+				</tr>
+				<tr>
+					<td class="td-name">Nodes 1500+</td>
+					<td class="td-desc">$80/node/year</td>
+				</tr>
+			</tbody>
+		</table>
+		<p class="body-p">
+			Bigger fleet, lower cost per node. No jumps.
+		</p>
+
+		<div class="price-est">
+			<label class="price-est-label" for="node-range">Your nodes</label>
+			<div class="price-est-row">
+				<input id="node-range" type="range" min="1" max="3000" step="1" value="100" />
+				<input id="node-num" type="number" min="1" max="100000" step="1" value="100" aria-label="Node count" />
+			</div>
+			<p class="body-p" style="margin-bottom: 4px;">
+				<strong id="price-out">$70,000 per year</strong>
+			</p>
+			<p class="sub-p" id="pernode-out" style="margin-bottom: 0;">$700 per node per year. About $58 per node per month.</p>
+		</div>
+
+		<svg id="price-graph" viewBox="0 0 620 260" role="img" aria-label="Annual license by node count">
+			<line x1="60" y1="20" x2="60" y2="220" stroke="#d6d3d1" stroke-width="1" />
+			<line x1="60" y1="220" x2="600" y2="220" stroke="#d6d3d1" stroke-width="1" />
+			<text x="60" y="238" font-size="11" fill="#78716c">0</text>
+			<text x="220" y="238" font-size="11" fill="#78716c">750</text>
+			<text x="390" y="238" font-size="11" fill="#78716c">1500</text>
+			<text x="560" y="238" font-size="11" fill="#78716c">3000</text>
+			<text x="8" y="60" font-size="11" fill="#78716c">$350k</text>
+			<text x="8" y="140" font-size="11" fill="#78716c">$200k</text>
+			<text x="16" y="205" font-size="11" fill="#78716c">$50k</text>
+			<path id="price-curve" fill="none" stroke="#1d4ed8" stroke-width="2.5" d="" />
+			<circle id="price-dot" r="5" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" cx="0" cy="0" />
+		</svg>
 	</section>
 
 	<section class="content-section">
 		<div class="section-header">
 			<h2 class="section-title">Terms</h2>
 		</div>
-		<p class="body-p">
-			Annual licenses cover production use of the software. We don't offer support contracts or SLAs. If you need hands-on help, <a href="/contact/" class="body-link">consulting and assurance</a> are available separately.
-		</p>
+		<dl class="terms-list">
+			<div class="term-row"><dt class="term-title"><dfn>You count your nodes</dfn></dt><dd class="term-body">Tell us once a year the most nodes you ran at one time. We trust you. No telemetry, no tracking, nothing to install.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn>No SLAs</dfn></dt><dd class="term-body">We do not run your network, robots, or safety systems, so we cannot promise uptime. The license pays for production use.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn>Help if you want it</dfn></dt><dd class="term-body">Consulting and assurance by the hour. <a href="/contact/" class="body-link">Contact engineering</a>.</dd></div>
+		</dl>
 	</section>
 
 	<section class="content-section">
@@ -55,4 +109,192 @@ import Layout from '../layouts/Layout.astro';
 	<p class="body-p">
 		<a href="/contact/" class="body-link">Contact engineering</a>
 	</p>
+
+	<style>
+		.fleet-quote {
+			position: relative;
+			background: #fefce8;
+			border: 1px solid #fde68a;
+			padding: 16px 18px 16px 44px;
+			margin: 16px 0 0;
+			color: #44403c;
+			font-size: 0.95rem;
+			line-height: 1.7;
+		}
+		.fleet-quote::before {
+			content: "\201C";
+			position: absolute;
+			left: 12px;
+			top: 2px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 2.4rem;
+			line-height: 1;
+			color: #f59e0b;
+		}
+		.projects-table {
+			margin: 16px 0 20px;
+		}
+		.terms-list {
+			margin: 0 0 16px;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+		.term-row {
+			margin: 0;
+			padding: 0;
+			border: none;
+			font-size: 1rem;
+			line-height: 1.75;
+			color: #44403c;
+		}
+		.term-title {
+			display: inline;
+			font-weight: 600;
+			font-size: inherit;
+			line-height: inherit;
+			color: #0c0a09;
+			margin: 0;
+		}
+		.term-title::after {
+			content: ". ";
+			font-weight: 600;
+		}
+		.term-title dfn {
+			font-style: normal;
+		}
+		.term-body {
+			display: inline;
+			margin: 0;
+			font-size: inherit;
+			line-height: inherit;
+			color: inherit;
+		}
+		.price-est {
+			border: 1px solid #e7e5e4;
+			background: #fafaf9;
+			padding: 16px;
+			margin: 20px 0;
+		}
+		.price-est-label {
+			display: block;
+			font-size: 0.82rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: #57534e;
+			margin-bottom: 10px;
+		}
+		.price-est-row {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+		}
+		#node-range {
+			flex: 1;
+			accent-color: #1d4ed8;
+		}
+		#node-num {
+			width: 110px;
+			font: inherit;
+			padding: 8px 10px;
+			border: 1px solid #d6d3d1;
+			border-radius: 4px;
+			background: #ffffff;
+			color: #0c0a09;
+		}
+		#price-graph {
+			width: 100%;
+			height: auto;
+			display: block;
+			margin: 16px 0 8px;
+			border: 1px solid #e7e5e4;
+			background: #ffffff;
+		}
+	</style>
+
+	<script>
+		function initPricing() {
+			var range = document.getElementById("node-range");
+			var num = document.getElementById("node-num");
+			var out = document.getElementById("price-out");
+			var per = document.getElementById("pernode-out");
+			var curve = document.getElementById("price-curve");
+			var dot = document.getElementById("price-dot");
+			if (!range || !num || !out || !per) return;
+
+			/** Price one license year for n production nodes. */
+			function annualPrice(n) {
+				n = Math.max(1, Math.floor(Number(n) || 1));
+				var total = 25000;
+				if (n <= 25) return total;
+				var rest = n - 25;
+				var take = Math.min(rest, 75);
+				total += take * 600;
+				rest -= take;
+				if (rest <= 0) return total;
+				take = Math.min(rest, 400);
+				total += take * 300;
+				rest -= take;
+				if (rest <= 0) return total;
+				take = Math.min(rest, 1000);
+				total += take * 120;
+				rest -= take;
+				if (rest <= 0) return total;
+				total += rest * 80;
+				return total;
+			}
+
+			/** Format dollars with no decimals. */
+			function fmtUSD(v) {
+				return "$" + Math.round(v).toLocaleString("en-US");
+			}
+
+			/** Map node count to SVG x. */
+			function xFor(n) {
+				return 60 + (Math.min(n, 3000) / 3000) * 540;
+			}
+
+			/** Map annual price to SVG y. */
+			function yFor(p) {
+				return 220 - (Math.min(p, 500000) / 500000) * 180;
+			}
+
+			/** Draw the concave price curve once. */
+			function drawCurve() {
+				if (!curve) return;
+				var d = "";
+				for (var n = 1; n <= 3000; n += 15) {
+					var x = xFor(n).toFixed(1);
+					var y = yFor(annualPrice(n)).toFixed(1);
+					d += (d ? " L" : "M") + x + " " + y;
+				}
+				curve.setAttribute("d", d);
+			}
+
+			/** Refresh estimate text and graph marker. */
+			function update(fromNum) {
+				var n = Math.max(1, Math.floor(Number(fromNum ? num.value : range.value) || 1));
+				if (!fromNum) num.value = String(Math.min(n, 100000));
+				else range.value = String(Math.min(n, 3000));
+				var p = annualPrice(n);
+				out.textContent = fmtUSD(p) + " per year";
+				var avg = p / n;
+				per.textContent = fmtUSD(avg) + " per node per year. About " + fmtUSD(avg / 12) + " per node per month.";
+				if (dot) {
+					dot.setAttribute("cx", String(xFor(Math.min(n, 3000))));
+					dot.setAttribute("cy", String(yFor(p)));
+				}
+			}
+
+			drawCurve();
+			update(false);
+			range.oninput = function () { update(false); };
+			num.oninput = function () { update(true); };
+		}
+		document.addEventListener("DOMContentLoaded", initPricing);
+		document.addEventListener("astro:page-load", initPricing);
+		initPricing();
+	</script>
 </Layout>
