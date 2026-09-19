@@ -1,46 +1,42 @@
-# Astro Starter Kit: Basics
+# Podomy website
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Marketing site and docs for [podomy.com](https://podomy.com).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Products live in the [podomy GitHub org](https://github.com/podomy). This repo is only the website.
 
-## 🚀 Project Structure
+## Routes
 
-Inside of your Astro project, you'll see the following folders and files:
+* `/` About
+* `/concord/` Product summary
+* `/docs/` Docs, rendered from `docs/`
+* `/pricing/` Commercial licenses
+* `/contact/` Talk to engineering
+* `/terms/` Terms
+
+`docs/` mirrors Concord `docs/` (overview, architecture, CLI, Go SDK, deployment). Keep wording in sync when Concord docs change.
+
+## Structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/pages/    Routes, including pricing estimator
+src/layouts/  Site chrome
+src/components/
+src/styles/   Global CSS
+docs/         Markdown source for /docs/
+public/       Static assets
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Commands
 
-## 🧞 Commands
+```sh
+pnpm install
+pnpm dev      # local server
+pnpm build    # static output in dist/
+pnpm preview  # preview the build
+```
 
-All commands are run from the root of the project, from a terminal:
+Requires Node >=22.12.0.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Contributing
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Discuss changes with engineering at [contact@podomy.com](mailto:contact@podomy.com) before large edits.
