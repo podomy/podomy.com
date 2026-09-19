@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo.png" alt="Podomy" width="15%">
+  <img src="./public/logo.png" alt="Podomy" width="7.5%">
 </p>
 
 <h1 align="center">Podomy</h1>
