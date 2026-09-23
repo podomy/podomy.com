@@ -19,13 +19,14 @@ Traditional distributed systems freeze or fail when machines lose network access
 
 * **Journal**: An append-only log of immutable events (`workload.spec`, `workload.tombstone`, `node.started`).
 * **Workloads**: Declarative specifications defining execution parameters, environment, ports, and health checks.
-* **Mesh**: Automatic WireGuard tunnels connecting nodes with mutual TLS authentication.
+* **Mesh**: Automatic WireGuard tunnels between nodes, with mutual Noise authentication on the sync transport.
 
 ---
 
 ## Next Steps
 
 * [Architecture](/docs/architecture/) -> How Concord works under the hood.
+* [Noise Transport](/docs/noise/) -> Mutual authentication on the sync transport.
 * [CLI Reference](/docs/cli/) -> Command line commands and usage.
 * [Go SDK](/docs/sdk/) -> Programmatic workload management.
 * [Deployment](/docs/deployment/) -> Running nodes and clustering.

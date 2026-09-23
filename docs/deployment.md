@@ -69,7 +69,7 @@ systemctl status concord
 
 ## Cluster Trust & Certificate Authority (CA) Provisioning
 
-All nodes in a Concord cluster authenticate each other via mutual TLS (mTLS). **Every single node in the cluster must be provisioned with the exact same Root Certificate Authority (`ca.crt` and `ca.key`).**
+All nodes in a Concord cluster authenticate each other over Noise on `:8443`. **Every single node in the cluster must be provisioned with the exact same Root Certificate Authority (`ca.crt` and `ca.key`).** There is exactly one CA, self-signed, with no intermediate or secondary CAs. The CA keypair serves exactly one purpose: the private key in `ca.key` signs node parcels, and the public key in `ca.crt` checks those signatures. Nothing else in the system uses either half. The certificate format is storage only: Concord never performs X.509 verification and never checks dates; `ca.crt` is just the carrier for the CA public key. Each signature covers one node's ID, key generation, and static public key, and that signature is the node's membership credential.
 
 Before starting any Concord node for the first time, upload your cluster's shared CA files to its config directory (defaults to `~/.config/concord/certs`):
 
@@ -85,10 +85,28 @@ chmod 600 ~/.config/concord/certs/ca.key
 
 When Concord starts:
 1. It verifies that the shared `ca.crt` and `ca.key` exist.
-2. It automatically generates a unique node identity (`UUID`) and mints a local `node.crt` and `node.key` signed by the shared CA.
-3. If pre-minted `node.crt` and `node.key` already exist alongside `ca.crt`, it reuses them directly.
+2. It generates a long-term X25519 static keypair (`~/.config/concord/noise/secret.key`, created once and reused) and signs the binding of node ID, key generation, and public key with the shared CA.
+3. It gossips the public key and generation; the CA signature travels inside each Noise session.
 
-Because every node is signed by the same Root CA, all nodes can mutually verify each other's identity across the mesh.
+Because every binding is signed by the same Root CA, all nodes can mutually verify each other's identity across the mesh. Verification is by CA signature only; there are no certificates and no validity windows, so nodes need no wall-clock agreement.
+
+Key rotation means deleting `secret.key`, bumping `noise/generation`, and restarting so boot generates a fresh key and the new binding is signed and gossiped. The bump is the load-bearing step, a fresh key at the same generation trips the pin alarm instead of splitting the fleet. The highest generation seen for a node wins.
+
+Peers pin the first valid key they see for each node ID. A different key at the same generation is rejected with a warning and the pin sticks, which is how partial state loss (new key, old counter) surfaces instead of silently splitting the fleet. Recover by bumping the generation, an intentional act.
+
+## Gossip Encryption Key Provisioning
+
+Memberlist gossip is AES-GCM encrypted with a cluster-wide pre-shared key. **Every node must hold the exact same key bytes.** Generate once per cluster and distribute alongside the CA files:
+
+```bash
+# Generate ONCE per cluster, then copy the same file to EVERY node:
+openssl rand 32 > gossip.key
+mkdir -p ~/.config/concord/memberservice
+cp /path/to/shared/gossip.key ~/.config/concord/memberservice/secret.key
+chmod 600 ~/.config/concord/memberservice/secret.key
+```
+
+The file must hold 16, 24, or 32 raw bytes (AES-128/192/256); Concord refuses to start otherwise. A mismatched key is indistinguishable from a network partition at the gossip layer, so on split-brain symptoms compare the `sha256` fingerprint each node logs at startup (`gossip key loaded`).
 
 ---
 
@@ -97,8 +115,8 @@ Because every node is signed by the same Root CA, all nodes can mutually verify 
 Concord nodes automatically discover each other over the local subnet using SWIM gossip (UDP port `17946`).
 
 When a node starts:
-1. It initializes its mutual TLS identity from `~/.config/concord/certs/`.
+1. It initializes its Noise identity from `~/.config/concord/noise/` and `~/.config/concord/certs/`.
 2. It listens for gossip announcements from peer nodes on the local network.
-3. Once discovered, nodes establish an encrypted WireGuard mesh and sync journal events over mTLS.
+3. Once discovered, nodes establish an encrypted WireGuard mesh and sync journal events over Noise.
 
 No central master server, control plane, or external database is required.

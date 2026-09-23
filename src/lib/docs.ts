@@ -19,6 +19,7 @@ interface DocModule {
 export const PREFERRED_ORDER = [
 	"overview",
 	"architecture",
+	"noise",
 	"cli",
 	"sdk",
 	"deployment",

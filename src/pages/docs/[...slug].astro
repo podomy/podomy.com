@@ -103,6 +103,111 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
       ) : <div class="docs-pag-placeholder" />}
     </div>
   </div>
+
+  <style>
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 4px;
+      padding: 16px 12px;
+      margin: 0 0 20px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+
+  <script>
+    /** Mermaid diagram keywords that mark a code block as a diagram. */
+    var MERMAID_KEYWORDS = [
+      "flowchart",
+      "graph",
+      "sequenceDiagram",
+      "classDiagram",
+      "stateDiagram",
+      "erDiagram",
+      "gantt",
+      "pie",
+      "packet",
+    ];
+
+    /** Return true when plain text looks like a Mermaid diagram source. */
+    function isMermaidSource(text) {
+      var first = (text || "").trim().split("\n")[0] || "";
+      var head = first.trim();
+      for (var i = 0; i < MERMAID_KEYWORDS.length; i++) {
+        if (head.indexOf(MERMAID_KEYWORDS[i]) === 0) return true;
+      }
+      return false;
+    }
+
+    /** Replace Mermaid code blocks with render targets, then render them. */
+    async function renderMermaid() {
+      var blocks = document.querySelectorAll(
+        ".markdown-body pre.astro-code, .markdown-body pre"
+      );
+      var targets = [];
+      blocks.forEach(function (pre) {
+        if (pre.dataset.mermaidDone === "1") return;
+        var code = pre.querySelector("code");
+        var source = code ? code.innerText : pre.textContent;
+        if (!source || !isMermaidSource(source)) return;
+        var div = document.createElement("div");
+        div.className = "mermaid";
+        div.textContent = source.trim();
+        pre.replaceWith(div);
+        targets.push(div);
+      });
+      if (targets.length === 0) return;
+      try {
+        var mermaid = (
+          await import(
+            "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
+          )
+        ).default;
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: "base",
+          themeVariables: {
+            background: "#ffffff",
+            primaryColor: "#eff6ff",
+            primaryBorderColor: "#1d4ed8",
+            primaryTextColor: "#0c0a09",
+            secondaryColor: "#fafaf9",
+            secondaryBorderColor: "#d6d3d1",
+            tertiaryColor: "#f5f5f4",
+            lineColor: "#57534e",
+            textColor: "#1c1917",
+            mainBkg: "#eff6ff",
+            nodeBorder: "#1d4ed8",
+            clusterBkg: "#fafaf9",
+            clusterBorder: "#d6d3d1",
+            edgeLabelBackground: "#ffffff",
+          },
+          flowchart: { curve: "linear", htmlLabels: true },
+          sequence: { mirrorActors: false },
+        });
+        await mermaid.run({ nodes: targets });
+        targets.forEach(function (el) {
+          el.style.whiteSpace = "";
+        });
+      } catch (err) {
+        console.warn("Mermaid render skipped:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", renderMermaid);
+    document.addEventListener("astro:page-load", renderMermaid);
+    renderMermaid();
+  </script>
 </Layout>
 
 
