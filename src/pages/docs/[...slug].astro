@@ -104,109 +104,113 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
     </div>
   </div>
 
-  <style>
-    .mermaid {
-      background: #ffffff;
-      border: 1px solid #e7e5e4;
-      border-radius: 4px;
-      padding: 16px 12px;
-      margin: 0 0 20px;
-      overflow-x: auto;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .mermaid svg {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-  </style>
-
   <script>
-    /** Mermaid diagram keywords that mark a code block as a diagram. */
-    var MERMAID_KEYWORDS = [
-      "flowchart",
-      "graph",
-      "sequenceDiagram",
-      "classDiagram",
-      "stateDiagram",
-      "erDiagram",
-      "gantt",
-      "pie",
-      "packet",
-    ];
-
-    /** Return true when plain text looks like a Mermaid diagram source. */
-    function isMermaidSource(text) {
-      var first = (text || "").trim().split("\n")[0] || "";
-      var head = first.trim();
-      for (var i = 0; i < MERMAID_KEYWORDS.length; i++) {
-        if (head.indexOf(MERMAID_KEYWORDS[i]) === 0) return true;
-      }
-      return false;
-    }
-
-    /** Replace Mermaid code blocks with render targets, then render them. */
-    async function renderMermaid() {
+    /** Mark soft-wrapped rows in labeled code blocks with a gutter glyph. */
+    function markWrappedLines() {
       var blocks = document.querySelectorAll(
-        ".markdown-body pre.astro-code, .markdown-body pre"
+        '.markdown-body pre.astro-code:not([data-language="plaintext"])'
       );
-      var targets = [];
       blocks.forEach(function (pre) {
-        if (pre.dataset.mermaidDone === "1") return;
-        var code = pre.querySelector("code");
-        var source = code ? code.innerText : pre.textContent;
-        if (!source || !isMermaidSource(source)) return;
-        var div = document.createElement("div");
-        div.className = "mermaid";
-        div.textContent = source.trim();
-        pre.replaceWith(div);
-        targets.push(div);
+        pre.querySelectorAll(".wrap-mark").forEach(function (mark) {
+          mark.remove();
+        });
+        var preRect = pre.getBoundingClientRect();
+        var preStyle = window.getComputedStyle(pre);
+        var gutterLeft =
+          (parseFloat(preStyle.borderLeftWidth) || 0) +
+          (parseFloat(preStyle.paddingLeft) || 0) +
+          2;
+        var gutterTop = parseFloat(preStyle.borderTopWidth) || 0;
+        pre.querySelectorAll(".line").forEach(function (line) {
+          var lineStyle = window.getComputedStyle(line);
+          var rowHeight = parseFloat(lineStyle.lineHeight);
+          if (!rowHeight || rowHeight <= 0) {
+            rowHeight = parseFloat(lineStyle.fontSize) * 1.6;
+          }
+          var rect = line.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) return;
+          var rows = Math.round(rect.height / rowHeight);
+          for (var i = 1; i < rows; i++) {
+            var mark = document.createElement("span");
+            mark.className = "wrap-mark";
+            mark.setAttribute("aria-hidden", "true");
+            mark.style.left = gutterLeft + "px";
+            mark.style.top =
+              rect.top - preRect.top - gutterTop + i * rowHeight + "px";
+            mark.style.lineHeight = rowHeight + "px";
+            pre.appendChild(mark);
+          }
+        });
       });
-      if (targets.length === 0) return;
-      try {
-        var mermaid = (
-          await import(
-            "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"
-          )
-        ).default;
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: "base",
-          themeVariables: {
-            background: "#ffffff",
-            primaryColor: "#eff6ff",
-            primaryBorderColor: "#1d4ed8",
-            primaryTextColor: "#0c0a09",
-            secondaryColor: "#fafaf9",
-            secondaryBorderColor: "#d6d3d1",
-            tertiaryColor: "#f5f5f4",
-            lineColor: "#57534e",
-            textColor: "#1c1917",
-            mainBkg: "#eff6ff",
-            nodeBorder: "#1d4ed8",
-            clusterBkg: "#fafaf9",
-            clusterBorder: "#d6d3d1",
-            edgeLabelBackground: "#ffffff",
-          },
-          flowchart: { curve: "linear", htmlLabels: true },
-          sequence: { mirrorActors: false },
-        });
-        await mermaid.run({ nodes: targets });
-        targets.forEach(function (el) {
-          el.style.whiteSpace = "";
-        });
-      } catch (err) {
-        console.warn("Mermaid render skipped:", err);
-      }
     }
 
-    document.addEventListener("DOMContentLoaded", renderMermaid);
-    document.addEventListener("astro:page-load", renderMermaid);
-    renderMermaid();
+    /** Show a scroll hint on diagram blocks that overflow horizontally. */
+    function updateScrollHints() {
+      var blocks = document.querySelectorAll(
+        '.markdown-body pre[data-language="plaintext"]'
+      );
+      blocks.forEach(function (pre) {
+        var hint = pre.previousElementSibling;
+        if (!hint || !hint.classList.contains("scroll-hint")) {
+          hint = document.createElement("div");
+          hint.className = "scroll-hint";
+          hint.setAttribute("aria-hidden", "true");
+          hint.innerHTML =
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="8 8 5 12 8 16"></polyline><polyline points="16 8 19 12 16 16"></polyline></svg><span>Scroll</span>';
+          pre.before(hint);
+          pre.addEventListener("scroll", updateScrollHints, { passive: true });
+        }
+        var canScroll = pre.scrollWidth > pre.clientWidth + 2;
+        if (canScroll) hint.classList.add("is-visible");
+        else hint.classList.remove("is-visible");
+      });
+    }
+
+    /** Wrap markdown tables in a scroll container for proper column fill. */
+    function wrapTables() {
+      document.querySelectorAll(".markdown-body table").forEach(function (table) {
+        if (
+          table.parentElement &&
+          table.parentElement.classList.contains("table-scroll")
+        )
+          return;
+        var wrap = document.createElement("div");
+        wrap.className = "table-scroll";
+        table.before(wrap);
+        wrap.appendChild(table);
+      });
+    }
+
+    /** Debounced re-marking for viewport and font changes. */
+    var markTimer = 0;
+    function scheduleDocsEnhance() {
+      if (markTimer) window.clearTimeout(markTimer);
+      markTimer = window.setTimeout(function () {
+        markWrappedLines();
+        updateScrollHints();
+      }, 150);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      markWrappedLines();
+      updateScrollHints();
+      wrapTables();
+    });
+    document.addEventListener("astro:page-load", function () {
+      markWrappedLines();
+      updateScrollHints();
+      wrapTables();
+    });
+    window.addEventListener("resize", scheduleDocsEnhance);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        markWrappedLines();
+        updateScrollHints();
+      });
+    }
+    markWrappedLines();
+    updateScrollHints();
+    wrapTables();
   </script>
 </Layout>
 

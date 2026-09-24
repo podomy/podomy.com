@@ -25,8 +25,8 @@ Traditional distributed systems freeze or fail when machines lose network access
 
 ## Next Steps
 
-* [Architecture](/docs/architecture/) -> How Concord works under the hood.
-* [Noise Transport](/docs/noise/) -> Mutual authentication on the sync transport.
-* [CLI Reference](/docs/cli/) -> Command line commands and usage.
-* [Go SDK](/docs/sdk/) -> Programmatic workload management.
-* [Deployment](/docs/deployment/) -> Running nodes and clustering.
+* [Architecture](/docs/architecture/) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-3px"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> How Concord works under the hood.
+* [Noise Transport](/docs/noise/) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-3px"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> Mutual authentication on the sync transport.
+* [CLI Reference](/docs/cli/) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-3px"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> Command line commands and usage.
+* [Go SDK](/docs/sdk/) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-3px"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> Programmatic workload management.
+* [Deployment](/docs/deployment/) <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-3px"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg> Running nodes and clustering.

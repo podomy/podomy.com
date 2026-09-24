@@ -110,15 +110,14 @@ The session parcel, 280 bytes with RSA-2048, traveling in each handshake:
 Signing happens once per boot on the node itself; verification happens on
 every peer, every session:
 
-```mermaid
-flowchart LR
-    subgraph Sign["Signer (boot)"]
-        S1["domain + ID + gen + pub"] --> S2["SHA-256 hash"] --> S3["RSA sign with ca.key<br/>256 sig bytes"]
-    end
-    subgraph Verify["Verifier (every session, both sides)"]
-        V1["domain + ID + gen + handshake key"] --> V2["SHA-256 hash"] --> V3["RSA verify with ca.crt<br/>accept or reject"]
-    end
-    S3 -- "compare" --> V3
+```
+Signer (boot):                        Verifier (every session, both sides):
+  domain + ID + gen + pub               domain + ID + gen + handshake key
+        │                                         │
+   SHA-256 hash                              SHA-256 hash
+        │                                         │
+  RSA sign with ca.key          compare     RSA verify with ca.crt
+   (= 256 sig bytes)           ───────►     (= accept / reject)
 ```
 
 The two layouts are related by the signature: signing the 81-byte message
@@ -165,18 +164,29 @@ is AES-encrypted with the cluster gossip key.
 
 ## Session flow
 
-```mermaid
-sequenceDiagram
-    participant D as Dialer (initiator)
-    participant R as Responder
-    D->>R: TCP connect to :8443
-    D->>R: IK msg1 + parcel (ID, gen, sig)
-    Note over R: verify parcel, then reply
-    R->>D: IK msg2 + parcel (ID, gen, sig)
-    Note over D: verify parcel
-    D->>R: HTTP POST /v1/sync (AEAD frames)
-    R->>D: HTTP 200 + events (AEAD frames)
-    Note over D,R: close, session keys discarded
+```
+Dialer (initiator)                          Responder
+     │                                            │
+     │ TCP connect to :8443                       │
+     ├───────────────────────────────────────────►│
+     │                                            │
+     │ IK msg1 + parcel(ID, gen, sig)             │
+     ├───────────────────────────────────────────►│
+     │   responder verifies parcel,               │
+     │   then replies                             │
+     │                                            │
+     │ IK msg2 + parcel(ID, gen, sig)             │
+     │◄───────────────────────────────────────────┤
+     │                                            │
+     │ dialer verifies parcel                     │
+     │                                            │
+     │ HTTP POST /v1/sync (AEAD frames)           │
+     ├───────────────────────────────────────────►│
+     │                                            │
+     │ HTTP 200 + events (AEAD frames)            │
+     │◄───────────────────────────────────────────┤
+     │                                            │
+     │ close, session keys discarded              │
 ```
 
 How identity is established, precisely: the dialer encrypts its parcel in the

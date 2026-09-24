@@ -8,48 +8,107 @@ Concord is a decentralized coordination engine. State is driven by an append-onl
 
 ### 1. Workload Submission Flow
 
-```mermaid
-flowchart TD
-    CLI["CLI / Go SDK"] -->|"(1) POST /workload/submit<br/>JSON Workload Spec"| IPC["Unix IPC Server<br/>~/.config/concord/concord.sock"]
-    IPC -->|"(2) Record workload.spec event"| Journal["Append-Only Journal<br/>journal.jsonl"]
-    Journal -->|"(3) Deterministic projection"| Views["bbolt KV Views<br/>Workloads, EventsByID, ByNode"]
+```
+CLI / Go SDK
+     │
+     │ (1) POST /workload/submit
+     │     (JSON Workload Spec)
+     ▼
+Unix IPC Server
+(~/.config/concord/concord.sock)
+     │
+     │ (2) Record "workload.spec"
+     │     Event
+     ▼
+Append-Only Journal
+(journal.jsonl)
+     │
+     │ (3) Deterministic
+     │     Projection
+     ▼
+bbolt KV Views
+(Workloads, EventsByID, ByNode)
 ```
 
 ### 2. Local Workload Reconciliation & Execution Flow
 
-```mermaid
-flowchart TD
-    Views["bbolt KV Views<br/>Desired State"] -->|"(4) Active workload specs"| Recon["Reconciler Loop"]
-    Recon -->|"(5) Fetch image"| Zot["Embedded OCI Registry<br/>Zot localhost:8444"]
-    Recon -->|"(6) Lifecycle control"| CR["Container Runtime<br/>internal/cr"]
-    CR --> Cgroups["cgroups<br/>CPU and memory"]
-    CR --> Runc["runc<br/>Namespaces"]
-    CR --> Net["Bridge and veth<br/>concord0"]
-    CR --> Health["Health check<br/>/health"]
+```
+bbolt KV Views (Desired State)
+     │
+     │ (4) Active Workload Specs
+     ▼
+Reconciler Loop
+     │
+     ├──► (5) Fetch Image
+     │         │
+     │         ▼
+     │    Embedded OCI Registry
+     │    (Zot localhost:8444)
+     │
+     └──► (6) Lifecycle Control
+               │
+               ▼
+          Container Runtime
+          (internal/cr)
+               │
+               ├──► cgroups (CPU/Mem)
+               │
+               ├──► runc (Namespaces)
+               │
+               ├──► Bridge & veth (concord0)
+               │
+               └──► Health Check (/health)
 ```
 
 ### 3. Peer Discovery & WireGuard Mesh Flow
 
-```mermaid
-flowchart TD
-    Disc["Node Discovery"] --> MDNS["mDNS<br/>LAN multicast"]
-    Disc --> SWIM["SWIM gossip<br/>UDP :17946"]
-    Disc --> DNS["DNS server<br/>SRV/A :15353"]
-    MDNS --> Members["Peer memberlist"]
-    SWIM --> Members
-    DNS --> Members
-    Members -->|"(7) Exchange WG keys and IPs"| WG["WireGuard mesh<br/>internal/cn<br/>Flat encrypted P2P overlay"]
+```
+Node Discovery
+     │
+     ├──► mDNS (LAN Multicast)
+     │         │
+     ├──► SWIM Gossip (UDP :17946)
+     │         │
+     └──► DNS Server (SRV/A :15353)
+               │
+               ▼
+     Peer Memberlist
+               │
+               │ (7) Exchange WG Keys & IPs
+               ▼
+     WireGuard Mesh (internal/cn)
+     (Flat Encrypted P2P Overlay)
 ```
 
 ### 4. Cross-Node State & Image Replication Flow
 
-```mermaid
-flowchart TD
-    Remote["Remote Node B<br/>Transport server and registry"] -->|"(8) Noise pull events<br/>(10) P2P image and blob sync<br/>Over WireGuard mesh"| Sync["Peer sync loop<br/>internal/peersync"]
-    Sync -->|"(9) Missing events"| Journal["Local journal<br/>journal.jsonl"]
-    Journal --> Views["Local bbolt views"]
-    Views --> Recon["Reconciler to runc"]
-    Sync -->|"(10) Missing blobs"| Registry["Embedded OCI registry<br/>localhost:8444"]
+```
+[ Remote Node B ]
+Transport Server & Registry
+       │
+       │ (8) Noise Pull Events
+       │ (10) P2P Image/Blob Sync
+       │ (Over WireGuard Mesh)
+       ▼
+[ Local Node A ]
+Peer Sync Loop (internal/peersync)
+       │
+       ├──► (9) Missing Events
+       │         │
+       │         ▼
+       │    Local Journal (journal.jsonl)
+       │         │
+       │         ▼
+       │    Local bbolt Views
+       │         │
+       │         ▼
+       │    Reconciler ──► runc
+       │
+       └──► (10) Missing Blobs
+                 │
+                 ▼
+            Embedded OCI Registry
+            (localhost:8444)
 ```
 
 ---

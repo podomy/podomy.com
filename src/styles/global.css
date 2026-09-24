@@ -1685,6 +1685,100 @@ pre code,
 	color: inherit;
 }
 
+/* ASCII diagrams (unlabeled fences): tighten tracking so wide art fits
+   better, and stack line boxes so vertical strokes join into solid lines.
+   Uniform tracking keeps monospace column alignment intact. */
+.markdown-body pre[data-language="plaintext"] {
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+}
+
+/* Scroll hint line above overflowing diagram blocks. Shown whenever
+   horizontal scrolling is available; hidden otherwise. */
+.scroll-hint {
+	display: none;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 6px;
+	color: #78716c;
+	font-size: 0.78rem;
+	font-weight: 500;
+	line-height: 1.4;
+}
+
+.scroll-hint.is-visible {
+	display: flex;
+}
+
+.scroll-hint svg {
+	flex-shrink: 0;
+}
+
+/* Labeled code fences wrap instead of scrolling. Each source line gets a
+   hanging indent; JS inserts a marker glyph in the indent gutter wherever
+   a soft wrap starts. Plaintext fences keep scrolling so ASCII art columns
+   never reflow. */
+.markdown-body pre.astro-code:not([data-language="plaintext"]) {
+	position: relative;
+	white-space: pre-wrap;
+	word-break: break-word;
+	overflow-wrap: anywhere;
+	overflow-x: visible;
+}
+
+.markdown-body pre.astro-code:not([data-language="plaintext"]) .line {
+	display: block;
+	font-size: 0.85rem;
+	padding-left: 2ch;
+	text-indent: -2ch;
+}
+
+/* Neutralize Shiki newline text nodes between .line spans so they do not
+   render as phantom blank rows, and keep truly empty lines at full height. */
+.markdown-body pre.astro-code:not([data-language="plaintext"]) > code {
+	font-size: 0;
+}
+
+.markdown-body pre.astro-code:not([data-language="plaintext"]) .line:empty::before {
+	content: "\00a0";
+}
+
+.wrap-mark {
+	position: absolute;
+	pointer-events: none;
+	font-size: inherit;
+}
+
+.wrap-mark::before {
+	content: "\21B3";
+	color: #1d4ed8;
+}
+
+/* Scroll container for markdown tables, added by JS. The table itself
+   stays a real table so columns fill the full width; the wrapper scrolls
+   only when content is wider than the column. */
+.table-scroll {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	border: 1px solid #e7e5e4;
+	margin: 16px 0 24px;
+}
+
+.markdown-body .table-scroll > table {
+	display: table;
+	margin: 0;
+	border: none;
+	width: 100%;
+}
+
+@media (max-width: 768px) {
+	.table-scroll {
+		overflow: visible;
+		border: none;
+		margin: 0;
+	}
+}
+
 @media (max-width: 768px) {
 	pre,
 	.astro-code,
