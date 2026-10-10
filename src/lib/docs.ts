@@ -30,7 +30,7 @@ export function slugFromPath(filepath: string): string {
 	return filepath.split("/").pop()?.replace(/\.md$/, "") || "";
 }
 
-// Resolve the sidebar label for a doc: navTitle, title, first H1, or title-cased slug.
+// Resolve the docs navigation label for a doc: navTitle, title, first H1, or title-cased slug.
 export function docLabel(doc: DocModule, slug: string): string {
 	const headings = doc.getHeadings ? doc.getHeadings() : [];
 	const firstH1 =
@@ -64,7 +64,7 @@ export function compareDocs(a: DocNavEntry, b: DocNavEntry): number {
 	return compareSlugs(a.slug, b.slug);
 }
 
-// Build the sorted sidebar navigation from eager doc modules.
+// Build the sorted docs navigation from eager doc modules.
 export function buildDocsNav(
 	docModules: Record<string, unknown>,
 ): DocNavEntry[] {

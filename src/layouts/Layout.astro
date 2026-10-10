@@ -1,27 +1,25 @@
 ---
 import "../styles/global.css";
-import { ClientRouter } from "astro:transitions";
 import BrandLink from "../components/BrandLink.astro";
 
 interface Props {
   title?: string;
   description?: string;
   currentPath?: string;
-  docsNav?: Array<{ slug: string; label: string; order?: number }>;
-  activeSlug?: string;
+  rawMarkdownUrl?: string;
 }
 
 const {
   title = "Podomy | Distributed Systems for Robotic Fleets",
   description = "We build distributed systems for robotic fleets.",
   currentPath = "/",
-  docsNav,
-  activeSlug,
+  rawMarkdownUrl,
 } = Astro.props;
 
 const navItems = [
   { label: "About", href: "/" },
   { label: "Concord", href: "/concord/" },
+  { label: "Flint", href: "/flint/" },
   { label: "Docs", href: "/docs/" },
   { label: "Pricing", href: "/pricing/" },
   { label: "Contact", href: "/contact/" },
@@ -32,16 +30,6 @@ const footerLinks = [
   { label: "Contact", href: "/contact/" },
   { label: "Terms", href: "/terms/" },
 ];
-
-const products = [
-  {
-    id: "concord",
-    name: "Concord",
-    href: "/concord/",
-  },
-];
-
-const activeProduct = "concord";
 
 const footerSocial = [
   {
@@ -57,10 +45,7 @@ const footerSocial = [
 ];
 
 const canonicalUrl = `https://podomy.com${currentPath.replace(/\/+$/, "") || "/"}${currentPath === "/" ? "" : "/"}`;
-const isDocPage = currentPath.startsWith("/docs/");
-const rawMarkdownUrl = isDocPage
-  ? `https://podomy.com/docs/${activeSlug || "overview"}.md`
-  : undefined;
+const isDocPage = currentPath.startsWith("/docs/") || currentPath.startsWith("/flint/docs/");
 
 const jsonLd = isDocPage
   ? {
@@ -89,6 +74,21 @@ const jsonLd = isDocPage
         name: "Concord",
         applicationCategory: "DistributedSystemsApplication",
         operatingSystem: "Linux, Embedded POSIX",
+        description: description,
+        url: canonicalUrl,
+        author: {
+          "@type": "Organization",
+          name: "Podomy",
+          url: "https://podomy.com",
+        },
+      }
+    : currentPath.replace(/\/+$/, "") === "/flint" || currentPath === "/flint/"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Flint",
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Windows, macOS, Linux",
         description: description,
         url: canonicalUrl,
         author: {
@@ -149,22 +149,32 @@ const jsonLd = isDocPage
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <ClientRouter />
   </head>
   <body>
     <div class="site-chrome">
-      <div class="product-bar">
-        <div class="product-bar-left">
-          {
-            isDocPage ? (
-              <BrandLink class="product-bar-brand" label="Podomy home" />
-            ) : (
-              <div class="product-bar-plain">
-                <BrandLink />
-              </div>
-            )
-          }
-          <button
+      <header class="site-header">
+        <BrandLink label="Podomy home" />
+        <nav class="site-nav" aria-label="Site">
+          {navItems.filter((item) => item.label !== "Concord" && item.label !== "Flint").map((item) => {
+            const normalizedCurrent =
+              currentPath.replace(/\/+$/, "") || "/";
+            const normalizedItem = item.href.replace(/\/+$/, "") || "/";
+            const isActive =
+              normalizedItem === "/"
+                ? normalizedCurrent === "/"
+                : normalizedCurrent === normalizedItem ||
+                  normalizedCurrent.startsWith(normalizedItem + "/");
+            return (
+              <a
+                href={item.href}
+                class:list={["nav-link", { active: isActive }]}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </nav>
+        <button
             class="hamburger"
             aria-label="Open navigation menu"
             aria-expanded="false"
@@ -185,29 +195,7 @@ const jsonLd = isDocPage
               <line x1="4" y1="17" x2="20" y2="17"></line>
             </svg>
           </button>
-        </div>
-        <div class="product-bar-right">
-          {
-            isDocPage ? (
-              <nav class="product-tabs" aria-label="Products">
-                {products.map((product) => (
-                  <a
-                    href={product.href}
-                    class:list={[
-                      "product-tab",
-                      { active: product.id === activeProduct },
-                    ]}
-                  >
-                    <span class="product-tab-name">{product.name}</span>
-                  </a>
-                ))}
-              </nav>
-            ) : (
-              <div class="product-bar-spacer" aria-hidden="true" />
-            )
-          }
-        </div>
-      </div>
+      </header>
       <div id="mobile-nav-modal" class="mobile-nav-modal" aria-hidden="true">
         <div class="mobile-nav-backdrop"></div>
         <div
@@ -259,62 +247,10 @@ const jsonLd = isDocPage
           </nav>
         </div>
       </div>
-      <div class:list={["layout-grid", { "docs-layout": isDocPage }]}>
-        <aside class="sidebar">
-          <div class="sidebar-sticky">
-            {
-              docsNav && docsNav.length > 0 ? (
-                <nav class="nav-links docs-nav">
-                  {docsNav.map((doc) => {
-                    const docHref =
-                      doc.slug === "overview" ? "/docs/" : `/docs/${doc.slug}/`;
-                    const isDocActive = activeSlug === doc.slug;
-                    return (
-                      <a
-                        href={docHref}
-                        class:list={[
-                          "docs-sidebar-link",
-                          { active: isDocActive },
-                        ]}
-                      >
-                        {doc.label}
-                      </a>
-                    );
-                  })}
-                </nav>
-              ) : (
-                <nav class="nav-links">
-                  {navItems.map((item) => {
-                    const normalizedCurrent =
-                      currentPath.replace(/\/+$/, "") || "/";
-                    const normalizedItem = item.href.replace(/\/+$/, "") || "/";
-                    const isActive =
-                      normalizedItem === "/"
-                        ? normalizedCurrent === "/"
-                        : normalizedCurrent === normalizedItem ||
-                          normalizedCurrent.startsWith(normalizedItem + "/");
-                    return (
-                      <div class="nav-item-group">
-                        <a
-                          href={item.href}
-                          class:list={["nav-link", { active: isActive }]}
-                        >
-                          {item.label}
-                        </a>
-                      </div>
-                    );
-                  })}
-                </nav>
-              )
-            }
-          </div>
-        </aside>
-
-        <div class="main-column">
-          <main>
-            <slot />
-          </main>
-        </div>
+      <div class:list={["main-column", { "docs-wide": isDocPage }]}>
+        <main>
+          <slot />
+        </main>
       </div>
       <footer class="site-footer">
         <div class="footer-inner">
@@ -381,7 +317,6 @@ const jsonLd = isDocPage
         });
       }
       document.addEventListener("DOMContentLoaded", initHamburger);
-      document.addEventListener("astro:page-load", initHamburger);
       initHamburger();
     </script>
   </body>

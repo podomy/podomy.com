@@ -1,59 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import LoopsNewsletter from '../components/LoopsNewsletter.astro';
 ---
 
 <Layout currentPath="/">
-	<section class="hero-section">
+	<section>
 		<h1 class="page-title">Podomy</h1>
-		<p class="page-lead" style="font-weight: 400;">
+		<p class="page-lead">
 			We build distributed systems for robotic fleets.
 		</p>
 		<blockquote class="fleet-quote">
 			<span style="font-variant: small-caps; font-weight: 600; letter-spacing: 0.08em;">fleet</span> any group of autonomous machines acting together
 		</blockquote>
-		<style>
-			.fleet-quote {
-				position: relative;
-				background: #fefce8;
-				border: 1px solid #fde68a;
-				padding: 16px 18px 16px 44px;
-				margin: 16px 0 0;
-				color: #44403c;
-				font-size: 0.95rem;
-				line-height: 1.7;
-			}
-			.fleet-quote::before {
-				content: "\201C";
-				position: absolute;
-				left: 12px;
-				top: 2px;
-				font-family: Georgia, "Times New Roman", serif;
-				font-size: 2.4rem;
-				line-height: 1;
-				color: #f59e0b;
-			}
-		</style>
 	</section>
 
 	<section class="content-section">
-		<div class="section-header">
-			<h2 class="section-title">Projects</h2>
-		</div>
+		<h2 class="section-title">Projects</h2>
 
 		<div class="projects-mobile">
 			<article class="project-card">
-				<div class="project-card-top">
-					<div>
-						<a href="/concord/" class="project-title body-link">Concord</a>
-						<p class="project-sub">Coordination</p>
-					</div>
+				<div>
+					<a href="/concord/" class="project-title body-link">Concord</a>
+					<p class="project-sub">Coordination</p>
 				</div>
 				<p class="project-desc">
-					AP distributed system, a runtime and coordination layer for robotic fleets.
+					Runtime for machine fleets that lose their network and keep running. Built for space, sea, remote terrain, and underground.
 				</p>
 				<div style="margin-top: 10px;">
 					<a href="/concord/" class="body-link">Read specs</a>
+				</div>
+			</article>
+			<article class="project-card">
+				<div>
+					<a href="/flint/" class="project-title body-link">Flint</a>
+					<p class="project-sub">UI Framework</p>
+				</div>
+				<p class="project-desc">
+					Cross-platform framework for GPU-intensive applications, combining production-ready UI components with high-performance rendering.
+				</p>
+				<div style="margin-top: 10px;">
+					<a href="/flint/" class="body-link">Learn more</a>
 				</div>
 			</article>
 		</div>
@@ -69,9 +54,23 @@ import LoopsNewsletter from '../components/LoopsNewsletter.astro';
 					</td>
 					<td class="td-desc">
 						<p style="margin: 0 0 8px;">
-							AP distributed system, a runtime and coordination layer for robotic fleets.
+							Runtime for machine fleets that lose their network and keep running. Built for space, sea, remote terrain, and underground.
 						</p>
 						<a href="/concord/" class="body-link">Read specs</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="td-name">
+						<a href="/flint/" class="body-link"><strong>Flint</strong></a>
+					</td>
+					<td class="td-role">
+						UI Framework
+					</td>
+					<td class="td-desc">
+						<p style="margin: 0 0 8px;">
+							Cross-platform framework for GPU-intensive applications, combining production-ready UI components with high-performance rendering.
+						</p>
+						<a href="/flint/" class="body-link">Learn more</a>
 					</td>
 				</tr>
 			</tbody>
@@ -79,20 +78,13 @@ import LoopsNewsletter from '../components/LoopsNewsletter.astro';
 	</section>
 
 	<section class="content-section">
-		<div class="section-header">
-			<h2 class="section-title">Working with us</h2>
-		</div>
+		<h2 class="section-title">Working with us</h2>
 		<p class="body-p">
-			Licenses from $10,000 per year. No SLAs. No support contracts.
-		</p>
-		<p class="body-p">
-			Assurance and consulting available separately.
+			Licenses from $10,000 per year. No SLAs. No support contracts. Assurance and consulting available separately.
 		</p>
 		<p class="body-p">
 			<a href="/pricing/" class="body-link">See pricing</a><svg class="dot-sep" width="4" height="4" viewBox="0 0 4 4" aria-hidden="true"><circle cx="2" cy="2" r="2" fill="currentColor"/></svg><a href="/contact/" class="body-link">Contact engineering</a>
 		</p>
 	</section>
-
-	<LoopsNewsletter />
 </Layout>
 

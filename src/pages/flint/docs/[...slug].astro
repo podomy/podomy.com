@@ -1,0 +1,87 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import DocsArticle from "../../../components/DocsArticle.astro";
+import { buildDocsNav, slugFromPath } from "../../../lib/docs";
+
+export async function getStaticPaths() {
+  const docModules = import.meta.glob("/docs-flint/*.md", { eager: true });
+  const docsNav = buildDocsNav(docModules);
+  const indexSlug = docsNav.length > 0 ? docsNav[0].slug : "developing";
+
+  const paths = [];
+
+  for (const [filepath, module] of Object.entries(docModules)) {
+    const filename = slugFromPath(filepath);
+    const doc = module as any;
+
+    // Main route: collection root for the index doc, slug routes for all docs
+    if (filename === indexSlug) {
+      paths.push({
+        params: { slug: undefined },
+        props: { doc, docsNav, activeSlug: indexSlug, indexSlug },
+      });
+    }
+    paths.push({
+      params: { slug: filename },
+      props: { doc, docsNav, activeSlug: filename, indexSlug },
+    });
+  }
+
+  return paths;
+}
+
+const docModules = import.meta.glob("/docs-flint/*.md", { eager: true });
+let { doc, docsNav, activeSlug, indexSlug } = Astro.props as any;
+
+// Fallback for direct/dev requests that bypass getStaticPaths props.
+if (!doc || !docsNav || !activeSlug) {
+  let paramSlug = Astro.params.slug || "developing";
+  if (paramSlug.endsWith(".md")) {
+    paramSlug = paramSlug.replace(/\.md$/, "");
+  }
+  activeSlug = paramSlug;
+
+  const targetKey = Object.keys(docModules).find((k) =>
+    k.endsWith(`/${activeSlug}.md`)
+  );
+  doc = targetKey ? (docModules[targetKey] as any) : null;
+  docsNav = buildDocsNav(docModules);
+  indexSlug = docsNav.length > 0 ? docsNav[0].slug : "developing";
+}
+
+if (!doc) {
+  return Astro.redirect("/flint/docs/");
+}
+
+const { Content, frontmatter, getHeadings } = doc;
+
+// Determine title from first heading or slug
+const headings = getHeadings ? getHeadings() : [];
+const pageTitle =
+  frontmatter?.title ||
+  headings[0]?.text ||
+  activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1);
+
+// Determine previous and next docs for footer pagination
+const currentIndex = docsNav.findIndex((item: any) => item.slug === activeSlug);
+const prevDoc = currentIndex > 0 ? docsNav[currentIndex - 1] : null;
+const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsNav[currentIndex + 1] : null;
+---
+
+<Layout
+  title={`${pageTitle} | Flint Docs | Podomy`}
+  description="Flint GPU-accelerated UI framework documentation."
+  currentPath={Astro.url.pathname}
+  rawMarkdownUrl={`https://podomy.com/flint/docs/${activeSlug}.md`}
+>
+  <DocsArticle
+    doc={doc}
+    docsNav={docsNav}
+    activeSlug={activeSlug}
+    prevDoc={prevDoc}
+    nextDoc={nextDoc}
+    basePath="/flint/docs"
+    indexSlug={indexSlug}
+    product="flint"
+  />
+</Layout>

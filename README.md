@@ -13,13 +13,16 @@ This repo is only the website.
 
 - [`/` About](./src/pages/index.astro)
 - [`/concord/` Product summary](./src/pages/concord.astro)
+- [`/flint/` Product summary](./src/pages/flint.astro)
 - [`/docs/` Docs, rendered from `docs/`](./docs/overview.md)
+- [`/flint/docs/` Flint docs, rendered from `docs-flint/`](./docs-flint/developing.md)
 - [`/pricing/` Commercial licenses](./src/pages/pricing.astro)
 - [`/contact/` Talk to engineering](./src/pages/contact.astro)
 - [`/terms/` Terms](./src/pages/terms.astro)
 
 `docs/` mirrors Concord `docs/` (overview, architecture, CLI, Go SDK,
-deployment). Keep wording in sync when Concord docs change.
+deployment). `docs-flint/` mirrors Flint `docs/` (developing,
+invariants, UI model). Keep wording in sync when either repo's docs change.
 
 ### Structure
 
@@ -46,5 +49,3 @@ Requires Node >=22.12.0.
 ### Contributing
 
 Discuss your change with the engineering team at [contact@podomy.com](mailto:contact@podomy.com) before opening a PR in order not to waste anybody's effort or time.
-
-Announcements and engineering updates on distributed systems, consensus algorithms, and robotic fleet coordination are shared via our newsletter at [podomy.com](https://podomy.com).

@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import DocsArticle from "../../components/DocsArticle.astro";
 import { buildDocsNav, slugFromPath } from "../../lib/docs";
 
 export async function getStaticPaths() {
@@ -74,144 +75,18 @@ const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsN
   title={`${pageTitle} | Docs | Podomy`}
   description="Concord partition-native coordination runtime documentation."
   currentPath={Astro.url.pathname}
-  docsNav={docsNav}
-  activeSlug={activeSlug}
+  rawMarkdownUrl={`https://podomy.com/docs/${activeSlug}.md`}
 >
-  <div class="docs-wrapper">
-    <article class="markdown-body">
-      <Content />
-    </article>
-
-    <div class="docs-pagination">
-      {prevDoc ? (
-        <a
-          href={prevDoc.slug === "overview" ? "/docs/" : `/docs/${prevDoc.slug}/`}
-          class="docs-pag-btn prev"
-        >
-          <span class="docs-pag-sub">&larr; Previous</span>
-          <span class="docs-pag-title">{prevDoc.label}</span>
-        </a>
-      ) : <div class="docs-pag-placeholder" />}
-      {nextDoc ? (
-        <a
-          href={nextDoc.slug === "overview" ? "/docs/" : `/docs/${nextDoc.slug}/`}
-          class="docs-pag-btn next"
-        >
-          <span class="docs-pag-sub">Next &rarr;</span>
-          <span class="docs-pag-title">{nextDoc.label}</span>
-        </a>
-      ) : <div class="docs-pag-placeholder" />}
-    </div>
-  </div>
-
-  <script>
-    /** Mark soft-wrapped rows in labeled code blocks with a gutter glyph. */
-    function markWrappedLines() {
-      var blocks = document.querySelectorAll(
-        '.markdown-body pre.astro-code:not([data-language="plaintext"])'
-      );
-      blocks.forEach(function (pre) {
-        pre.querySelectorAll(".wrap-mark").forEach(function (mark) {
-          mark.remove();
-        });
-        var preRect = pre.getBoundingClientRect();
-        var preStyle = window.getComputedStyle(pre);
-        var gutterLeft =
-          (parseFloat(preStyle.borderLeftWidth) || 0) +
-          (parseFloat(preStyle.paddingLeft) || 0) +
-          2;
-        var gutterTop = parseFloat(preStyle.borderTopWidth) || 0;
-        pre.querySelectorAll(".line").forEach(function (line) {
-          var lineStyle = window.getComputedStyle(line);
-          var rowHeight = parseFloat(lineStyle.lineHeight);
-          if (!rowHeight || rowHeight <= 0) {
-            rowHeight = parseFloat(lineStyle.fontSize) * 1.6;
-          }
-          var rect = line.getBoundingClientRect();
-          if (rect.width <= 0 || rect.height <= 0) return;
-          var rows = Math.round(rect.height / rowHeight);
-          for (var i = 1; i < rows; i++) {
-            var mark = document.createElement("span");
-            mark.className = "wrap-mark";
-            mark.setAttribute("aria-hidden", "true");
-            mark.style.left = gutterLeft + "px";
-            mark.style.top =
-              rect.top - preRect.top - gutterTop + i * rowHeight + "px";
-            mark.style.lineHeight = rowHeight + "px";
-            pre.appendChild(mark);
-          }
-        });
-      });
-    }
-
-    /** Show a scroll hint on diagram blocks that overflow horizontally. */
-    function updateScrollHints() {
-      var blocks = document.querySelectorAll(
-        '.markdown-body pre[data-language="plaintext"]'
-      );
-      blocks.forEach(function (pre) {
-        var hint = pre.previousElementSibling;
-        if (!hint || !hint.classList.contains("scroll-hint")) {
-          hint = document.createElement("div");
-          hint.className = "scroll-hint";
-          hint.setAttribute("aria-hidden", "true");
-          hint.innerHTML =
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="8 8 5 12 8 16"></polyline><polyline points="16 8 19 12 16 16"></polyline></svg><span>Scroll</span>';
-          pre.before(hint);
-          pre.addEventListener("scroll", updateScrollHints, { passive: true });
-        }
-        var canScroll = pre.scrollWidth > pre.clientWidth + 2;
-        if (canScroll) hint.classList.add("is-visible");
-        else hint.classList.remove("is-visible");
-      });
-    }
-
-    /** Wrap markdown tables in a scroll container for proper column fill. */
-    function wrapTables() {
-      document.querySelectorAll(".markdown-body table").forEach(function (table) {
-        if (
-          table.parentElement &&
-          table.parentElement.classList.contains("table-scroll")
-        )
-          return;
-        var wrap = document.createElement("div");
-        wrap.className = "table-scroll";
-        table.before(wrap);
-        wrap.appendChild(table);
-      });
-    }
-
-    /** Debounced re-marking for viewport and font changes. */
-    var markTimer = 0;
-    function scheduleDocsEnhance() {
-      if (markTimer) window.clearTimeout(markTimer);
-      markTimer = window.setTimeout(function () {
-        markWrappedLines();
-        updateScrollHints();
-      }, 150);
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      markWrappedLines();
-      updateScrollHints();
-      wrapTables();
-    });
-    document.addEventListener("astro:page-load", function () {
-      markWrappedLines();
-      updateScrollHints();
-      wrapTables();
-    });
-    window.addEventListener("resize", scheduleDocsEnhance);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () {
-        markWrappedLines();
-        updateScrollHints();
-      });
-    }
-    markWrappedLines();
-    updateScrollHints();
-    wrapTables();
-  </script>
+  <DocsArticle
+    doc={doc}
+    docsNav={docsNav}
+    activeSlug={activeSlug}
+    prevDoc={prevDoc}
+    nextDoc={nextDoc}
+    basePath="/docs"
+    indexSlug="overview"
+    product="concord"
+  />
 </Layout>
 
 
