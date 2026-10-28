@@ -774,26 +774,109 @@ main {
 }
 
 
-.docs-switch {
-	display: flex;
-	align-items: baseline;
-	gap: 20px;
-	font-size: 0.85rem;
-	margin: 0 0 36px;
+.docs-index-label {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: #78716c;
+	margin: 0 0 12px;
 }
 
-.docs-switch a {
-	color: #57534e;
+/* Mobile: horizontal scroll chips above the article */
+.docs-mobile-top {
+	margin: 0 0 28px;
+}
+
+.docs-index-nav-mobile {
+	overflow-x: auto;
+	margin: 0 -16px;
+	padding: 0 16px 4px;
+	scrollbar-width: none;
+}
+
+.docs-index-nav-mobile::-webkit-scrollbar {
+	display: none;
+}
+
+.docs-index-chips {
+	display: flex;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: max-content;
+	max-width: 100%;
+}
+
+.docs-index-chips a,
+.docs-index-chips .is-active {
+	display: inline-block;
+	white-space: nowrap;
+	font-size: 0.85rem;
+	line-height: 1.4;
+	padding: 8px 14px;
+	border-radius: 999px;
+	border: 1px solid #e7e5e4;
 	text-decoration: none;
 }
 
-.docs-switch a:hover {
-	color: #2563eb;
+.docs-index-chips a {
+	color: #57534e;
+	background: #ffffff;
 }
 
-.docs-switch .is-active {
+.docs-index-chips a:hover {
+	color: #2563eb;
+	border-color: #bfdbfe;
+}
+
+.docs-index-chips .is-active {
 	color: #1d4ed8;
+	background: #eff6ff;
+	border-color: #bfdbfe;
 	font-weight: 600;
+}
+
+@media (min-width: 768px) {
+	.docs-mobile-top {
+		display: none;
+	}
+}
+
+.docs-anchor-list {
+	margin: 0 0 8px;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 1rem;
+	line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+	.docs-anchor-list {
+		font-size: 1.04rem;
+		line-height: 1.5;
+	}
+}
+
+.docs-anchor-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.docs-anchor-link svg {
+	flex-shrink: 0;
+}
+
+.docs-back-link {
+	margin: 0 0 28px;
+	font-size: 0.9rem;
+	line-height: 1.5;
 }
 
 @media (min-width: 768px) {
@@ -817,28 +900,39 @@ main {
 		top: 24px;
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 2px;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.docs-index a {
-		color: #78716c;
+	.docs-index li {
+		margin: 0;
+	}
+
+	.docs-index a,
+	.docs-index .is-active {
+		display: block;
 		text-decoration: none;
 		font-size: 0.9rem;
 		line-height: 1.4;
+		padding: 8px 12px;
+		border-radius: 6px;
+	}
+
+	.docs-index a {
+		color: #57534e;
 	}
 
 	.docs-index a:hover {
 		color: #2563eb;
+		background: #f5f5f4;
 	}
 
 	.docs-index .is-active {
 		color: #1d4ed8;
+		background: #eff6ff;
 		font-weight: 600;
-		font-size: 0.9rem;
-		line-height: 1.4;
 	}
 }
 

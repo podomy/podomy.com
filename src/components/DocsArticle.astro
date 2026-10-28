@@ -12,10 +12,10 @@ interface Props {
 	nextDoc: DocNavItem | null;
 	basePath: string;
 	indexSlug: string;
-	product: "concord" | "flint";
+	productLabel?: string;
 }
 
-const { doc, docsNav, activeSlug, prevDoc, nextDoc, basePath, indexSlug, product } = Astro.props;
+const { doc, docsNav, activeSlug, prevDoc, nextDoc, basePath, indexSlug, productLabel = "Concord" } = Astro.props;
 const { Content } = doc;
 
 // Docs index URL for a slug: the collection root for the index doc,
@@ -26,25 +26,26 @@ function docHref(slug: string): string {
 ---
 
 <div class="docs-wrapper">
-	<p class="docs-switch">
-		{
-			product === "concord" ? (
-				<span class="is-active" aria-current="page">Concord</span>
-			) : (
-				<a href="/docs/">Concord</a>
-			)
-		}
-		{
-			product === "flint" ? (
-				<span class="is-active" aria-current="page">Flint</span>
-			) : (
-				<a href="/flint/docs/">Flint</a>
-			)
-		}
-	</p>
+	<div class="docs-mobile-top">
+		<p class="docs-index-label">{productLabel}</p>
+		<nav class="docs-index-nav-mobile" aria-label="Documentation pages">
+			<ul class="docs-index-chips">
+				{docsNav.map((item) => (
+					<li>
+						{item.slug === activeSlug ? (
+							<span class="is-active" aria-current="page">{item.label}</span>
+						) : (
+							<a href={docHref(item.slug)}>{item.label}</a>
+						)}
+					</li>
+				))}
+			</ul>
+		</nav>
+	</div>
 
 	<div class="docs-layout">
 		<nav class="docs-index-nav" aria-label="Documentation pages">
+			<p class="docs-index-label">{productLabel}</p>
 			<ul class="docs-index">
 				{docsNav.map((item) => (
 					<li>

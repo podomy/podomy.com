@@ -10,7 +10,7 @@ export const GET: APIRoute = async () => {
     { loc: `${siteUrl}/`, changefreq: "weekly", priority: "1.0" },
     { loc: `${siteUrl}/concord/`, changefreq: "weekly", priority: "0.9" },
     { loc: `${siteUrl}/flint/`, changefreq: "weekly", priority: "0.9" },
-    { loc: `${siteUrl}/docs/`, changefreq: "daily", priority: "0.9" },
+    { loc: `${siteUrl}/concord/docs/`, changefreq: "daily", priority: "0.9" },
     { loc: `${siteUrl}/flint/docs/`, changefreq: "daily", priority: "0.9" },
     { loc: `${siteUrl}/pricing/`, changefreq: "monthly", priority: "0.8" },
     { loc: `${siteUrl}/contact/`, changefreq: "monthly", priority: "0.7" },
@@ -23,8 +23,7 @@ export const GET: APIRoute = async () => {
     ...Object.keys(concordModules).flatMap((filepath) => {
       const slug = slugFromPath(filepath);
       return [
-        { loc: `${siteUrl}/docs/${slug}/`, changefreq: "daily", priority: "0.8" },
-        { loc: `${siteUrl}/docs/${slug}.md`, changefreq: "daily", priority: "0.7" },
+        { loc: `${siteUrl}/concord/docs/${slug}/`, changefreq: "daily", priority: "0.8" },
       ];
     }),
     ...Object.keys(flintModules).flatMap((filepath) => {

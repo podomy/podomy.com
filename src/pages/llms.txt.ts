@@ -22,18 +22,15 @@ function entriesFor(docModules: Record<string, unknown>, base: string): string[]
 }
 
 export const GET: APIRoute = async () => {
-  const concordModules = import.meta.glob("/docs/*.md", {
-    eager: true,
-    query: "?raw",
-    import: "default",
-  });
   const flintModules = import.meta.glob("/docs-flint/*.md", {
     eager: true,
     query: "?raw",
     import: "default",
   });
 
-  const docsEntries = entriesFor(concordModules, "https://podomy.com/docs");
+  const docsEntries = [
+    "- [Concord documentation](https://podomy.com/concord/#documentation): Specs, architecture, Noise transport, CLI reference, Go SDK, and deployment, published on the Concord page.",
+  ];
   const flintEntries = entriesFor(flintModules, "https://podomy.com/flint/docs");
 
   const body = `# Podomy & Concord Architecture Context

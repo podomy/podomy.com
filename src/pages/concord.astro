@@ -1,5 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { buildDocsNav, compareDocs, slugFromPath } from '../lib/docs';
+
+// Concord documentation index, in canonical reading order.
+const docModules = import.meta.glob("/docs/*.md", { eager: true });
+const docsNav = buildDocsNav(docModules);
+
+const docs = Object.entries(docModules)
+	.map(([filepath]) => {
+		const slug = slugFromPath(filepath);
+		const navItem = docsNav.find((item) => item.slug === slug);
+		return {
+			slug,
+			label: navItem?.label ?? slug,
+			order: navItem?.order,
+		};
+	})
+	.sort(compareDocs);
 ---
 
 <Layout
@@ -39,12 +56,44 @@ import Layout from '../layouts/Layout.astro';
 	</section>
 
 	<section class="content-section">
-		<h2 class="section-title">Docs & licensing</h2>
+		<h2 class="section-title">Demos</h2>
 		<p class="body-p">
-			Specs, CLI, SDK, and deployment in the <a href="/docs/" class="body-link">Documentation</a>.
+			No demos for now.
 		</p>
+	</section>
+
+	<section class="content-section">
+		<h2 class="section-title">Licensing</h2>
 		<p class="body-p">
 			For commercial terms: <a href="/pricing/" class="body-link">Pricing</a>, or email <a href="mailto:contact@podomy.com" class="body-link">contact@podomy.com</a>.
 		</p>
+	</section>
+
+	<section class="content-section" id="documentation">
+		<h2 class="section-title">Documentation</h2>
+		<ul class="docs-anchor-list">
+			{docs.map((doc) => (
+				<li>
+					<a href={doc.slug === "overview" ? `/concord/docs/` : `/concord/docs/${doc.slug}/`} class="body-link docs-anchor-link">
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+							<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+						</svg>
+						<span>{doc.label}</span>
+					</a>
+				</li>
+			))}
+		</ul>
+
 	</section>
 </Layout>

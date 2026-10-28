@@ -1,11 +1,9 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import DocsArticle from "../../components/DocsArticle.astro";
-import { buildDocsNav, slugFromPath } from "../../lib/docs";
+import Layout from "../../../layouts/Layout.astro";
+import { slugFromPath } from "../../../lib/docs";
 
 export async function getStaticPaths() {
   const docModules = import.meta.glob("/docs/*.md", { eager: true });
-  const docsNav = buildDocsNav(docModules);
 
   const paths = [];
 
@@ -13,20 +11,20 @@ export async function getStaticPaths() {
     const filename = slugFromPath(filepath);
     const doc = module as any;
 
-    // Main route: /docs/ for overview, /docs/<slug>/ for others
+    // Main route: /concord/docs/ for overview, /concord/docs/<slug>/ for others
     if (filename === "overview") {
       paths.push({
         params: { slug: undefined },
-        props: { doc, docsNav, activeSlug: "overview" },
+        props: { doc, activeSlug: "overview" },
       });
       paths.push({
         params: { slug: "overview" },
-        props: { doc, docsNav, activeSlug: "overview" },
+        props: { doc, activeSlug: "overview" },
       });
     } else {
       paths.push({
         params: { slug: filename },
-        props: { doc, docsNav, activeSlug: filename },
+        props: { doc, activeSlug: filename },
       });
     }
   }
@@ -35,10 +33,10 @@ export async function getStaticPaths() {
 }
 
 const docModules = import.meta.glob("/docs/*.md", { eager: true });
-let { doc, docsNav, activeSlug } = Astro.props as any;
+let { doc, activeSlug } = Astro.props as any;
 
 // Fallback for direct/dev requests that bypass getStaticPaths props.
-if (!doc || !docsNav || !activeSlug) {
+if (!doc || !activeSlug) {
   let paramSlug = Astro.params.slug || "overview";
   if (paramSlug.endsWith(".md")) {
     paramSlug = paramSlug.replace(/\.md$/, "");
@@ -49,11 +47,10 @@ if (!doc || !docsNav || !activeSlug) {
     k.endsWith(`/${activeSlug}.md`)
   );
   doc = targetKey ? (docModules[targetKey] as any) : null;
-  docsNav = buildDocsNav(docModules);
 }
 
 if (!doc) {
-  return Astro.redirect("/docs/");
+  return Astro.redirect("/concord/#documentation");
 }
 
 const { Content, frontmatter, getHeadings } = doc;
@@ -64,30 +61,33 @@ const pageTitle =
   frontmatter?.title ||
   headings[0]?.text ||
   activeSlug.charAt(0).toUpperCase() + activeSlug.slice(1);
-
-// Determine previous and next docs for footer pagination
-const currentIndex = docsNav.findIndex((item: any) => item.slug === activeSlug);
-const prevDoc = currentIndex > 0 ? docsNav[currentIndex - 1] : null;
-const nextDoc = currentIndex !== -1 && currentIndex < docsNav.length - 1 ? docsNav[currentIndex + 1] : null;
 ---
 
 <Layout
-  title={`${pageTitle} | Docs | Podomy`}
+  title={`${pageTitle} | Concord Docs | Podomy`}
   description="Concord partition-native coordination runtime documentation."
   currentPath={Astro.url.pathname}
-  rawMarkdownUrl={`https://podomy.com/docs/${activeSlug}.md`}
 >
-  <DocsArticle
-    doc={doc}
-    docsNav={docsNav}
-    activeSlug={activeSlug}
-    prevDoc={prevDoc}
-    nextDoc={nextDoc}
-    basePath="/docs"
-    indexSlug="overview"
-    product="concord"
-  />
+  <p class="docs-back-link">
+    <a href="/concord/#documentation" class="body-link docs-anchor-link">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Back to Documentation</span>
+    </a>
+  </p>
+  <article class="markdown-body">
+    <Content />
+  </article>
 </Layout>
-
-
-

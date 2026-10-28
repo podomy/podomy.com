@@ -1,6 +1,23 @@
 import type { APIRoute } from "astro";
 import { compareSlugs, slugFromPath } from "../lib/docs";
 
+// Concord docs are published inline on https://podomy.com/concord/,
+// so they bundle as one section instead of per-file URLs.
+function concordSection(docModules: Record<string, unknown>): string {
+  const sortedEntries = Object.entries(docModules).sort(([pathA], [pathB]) =>
+    compareSlugs(slugFromPath(pathA), slugFromPath(pathB))
+  );
+
+  const bodies = sortedEntries.map(([filepath, rawContent]) => {
+    const filename = `${slugFromPath(filepath)}.md`;
+    const content = typeof rawContent === "string" ? rawContent.trim() : "";
+    return `--- ${filename} ---\n\n${content}`;
+  });
+
+  const separator = "=".repeat(80);
+  return `${separator}\nCONCORD DOCUMENTATION (published at https://podomy.com/concord/)\n${separator}\n\n${bodies.join("\n\n\n")}`;
+}
+
 // One bundle section per doc, prefixed with its file name and canonical URL.
 function sectionsFor(docModules: Record<string, unknown>, base: string): string[] {
   const sortedFiles = Object.entries(docModules).sort(([pathA], [pathB]) =>
@@ -28,7 +45,7 @@ export const GET: APIRoute = async () => {
   });
 
   const sections = [
-    ...sectionsFor(concordModules, "https://podomy.com/docs"),
+    concordSection(concordModules),
     ...sectionsFor(flintModules, "https://podomy.com/flint/docs"),
   ];
 

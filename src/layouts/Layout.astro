@@ -20,7 +20,6 @@ const navItems = [
   { label: "About", href: "/" },
   { label: "Concord", href: "/concord/" },
   { label: "Flint", href: "/flint/" },
-  { label: "Docs", href: "/docs/" },
   { label: "Pricing", href: "/pricing/" },
   { label: "Contact", href: "/contact/" },
 ];
@@ -45,7 +44,7 @@ const footerSocial = [
 ];
 
 const canonicalUrl = `https://podomy.com${currentPath.replace(/\/+$/, "") || "/"}${currentPath === "/" ? "" : "/"}`;
-const isDocPage = currentPath.startsWith("/docs/") || currentPath.startsWith("/flint/docs/");
+const isDocPage = currentPath.startsWith("/flint/docs/");
 
 const jsonLd = isDocPage
   ? {
