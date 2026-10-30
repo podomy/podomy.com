@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
 	title="Pricing | Podomy"
-	description="Free under AGPLv3. Startups $10,000 per year. Enterprise is base plus tiers. No SLAs."
+	description="Free under AGPLv3. Startups $10,000 per year. Enterprise is base plus tiers. No cloud SLAs."
 	currentPath="/pricing/"
 >
 	<h1 class="page-title">Pricing</h1>
@@ -83,7 +83,10 @@ import Layout from '../layouts/Layout.astro';
 		<h2 class="section-title">Terms</h2>
 		<dl class="terms-list">
 			<div class="term-row"><dt class="term-title"><dfn>You count your nodes</dfn></dt><dd class="term-body">Tell us once a year the most nodes you ran at one time. We trust you. No telemetry, no tracking, nothing to install.</dd></div>
-			<div class="term-row"><dt class="term-title"><dfn>No SLAs</dfn></dt><dd class="term-body">We do not run your network, robots, or safety systems, so we cannot promise uptime. The license pays for production use.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn>No cloud <abbr title="Service Level Agreements">SLAs</abbr></dfn></dt><dd class="term-body">We do not run your network, robots, or safety systems, so we cannot promise uptime. The license pays for production use.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn><abbr title="Master Services Agreement">MSA</abbr> sets the terms</dfn></dt><dd class="term-body">One <abbr title="Master Services Agreement">MSA</abbr> covers license, confidentiality, and patch duty for core invariants. Each job gets an <abbr title="Statement of Work">SOW</abbr> with acceptance criteria on your hardware. You pay only after it passes.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn><abbr title="Statement of Work">SOW</abbr> defines acceptance</dfn></dt><dd class="term-body">It lists which invariants matter for this deployment and the numbers to pass. If one fails on a supported build, engineering ships a fix and reruns your test.</dd></div>
+			<div class="term-row"><dt class="term-title"><dfn>How features ship</dfn></dt><dd class="term-body">We say no by default. Every feature is a new way to fail in the field. We only build what your deployment needs to pass spec, under the <abbr title="Statement of Work">SOW</abbr>. The rest stays out.</dd></div>
 			<div class="term-row"><dt class="term-title"><dfn>Help if you want it</dfn></dt><dd class="term-body">Consulting and assurance by the hour. <a href="/contact/" class="body-link">Contact engineering</a>.</dd></div>
 		</dl>
 	</section>
@@ -91,7 +94,7 @@ import Layout from '../layouts/Layout.astro';
 	<section class="content-section">
 		<h2 class="section-title">Try it first</h2>
 		<p class="body-p">
-			One binary. Two nodes. Cut the network. Start with the <a href="/concord/docs/deployment/" class="body-link">Deployment guide</a>.
+			Choose from one of our <a href="/" class="body-link">projects</a>. One binary. Two nodes. Cut the network.
 		</p>
 	</section>
 
