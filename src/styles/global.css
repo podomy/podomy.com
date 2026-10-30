@@ -503,17 +503,33 @@ main {
 }
 
 .body-link,
+.body-link:link,
 .body-link:visited,
-.body-link:focus {
+.body-link:active,
+.body-link:focus,
+a.body-link,
+a.body-link:link,
+a.body-link:visited,
+.project-title.body-link,
+.project-title.body-link:link,
+.project-title.body-link:visited,
+.project-title.body-link:active,
+.project-title.body-link:focus {
 	color: #2563eb;
 	text-decoration: none;
 	font-weight: 500;
 	transition: color 0.15s ease;
 }
 
-.body-link:hover {
+.body-link:hover,
+a.body-link:hover,
+.project-title.body-link:hover {
 	color: #1d4ed8;
 	text-decoration: none;
+}
+
+.body-link strong {
+	color: inherit;
 }
 
 .dot-sep {
@@ -603,7 +619,6 @@ main {
 
 .project-title {
 	font-weight: 600;
-	color: #0c0a09;
 }
 
 .project-sub {
